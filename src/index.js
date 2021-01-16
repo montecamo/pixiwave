@@ -1,8 +1,9 @@
 
 import { makeWave, makeSea, shakeSea } from './sea';
-import { makeStep } from './stopwatch';
+import { makeStepper } from './stepper';
 
-const wave = makeWave(x => Math.sin(x * 50) * 200)(makeStep())
+const wave = makeWave(x => Math.sin(x * 50) * 200);
+const stepper = makeStepper(0.001);
 let sea = makeSea(230);
 
 const container = document.getElementById('wave');
@@ -29,7 +30,7 @@ const render = (sea) => {
 }
 
 const start = () => {
-  sea = shakeSea(sea)(wave);
+  sea = shakeSea(sea)(wave(stepper()));
 
   render(sea);
 

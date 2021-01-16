@@ -1,7 +1,8 @@
 
 #wave {
   display: flex;
-  margin-top: 30%;
+  margin-top: 50%;
+  transform: translateY(-50%);
 }
 
 .column {
