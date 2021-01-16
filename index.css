@@ -1,0 +1,12 @@
+
+#wave {
+  display: flex;
+  margin-top: 30%;
+}
+
+.column {
+  background: lightcoral;
+
+  width: 10px;
+  border-radius: 10px;
+}
