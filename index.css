@@ -1,13 +1,4 @@
 
-#wave {
-  display: flex;
-  margin-top: 50%;
-  transform: translateY(-50%);
-}
-
-.column {
-  background: lightcoral;
-
-  width: 10px;
-  border-radius: 10px;
+html, body {
+  margin: 0;
 }
