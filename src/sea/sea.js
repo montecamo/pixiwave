@@ -1,5 +1,4 @@
-
-import { makeStack, pushStack } from './limitedStack';
+import { makeStack, pushStack } from "./limitedStack";
 
 export const makeSea = (length) => makeStack(length)(0);
 

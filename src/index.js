@@ -3,8 +3,8 @@ import * as THREE from "three";
 
 import { makeWave, makeSea, shakeSea } from "./sea";
 import { makeStepper } from "./stepper";
-import { makeSquare, calcTileDepth } from "./square";
-import { makeTile } from "./tile";
+import { makePoint, makeRectangle, makeRectangleUtils } from "./shapes";
+import { makePointDepthCalculator } from "./calcPointDepth";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -29,9 +29,9 @@ const light = new THREE.DirectionalLight(color, intensity);
 light.position.set(-1, 2, 4);
 scene.add(light);
 
-camera.position.z = 150;
+camera.position.z = 250;
 camera.position.y = 0;
-camera.position.x = 20;
+camera.position.x = 40;
 
 const size = 1;
 
@@ -40,15 +40,14 @@ const spacing = 1.3;
 var grid = new THREE.Object3D();
 const boxes = [];
 
-const SQUARE = 61;
+const SQUARE = 100;
 
+const geo = new THREE.BoxBufferGeometry(size, size, size);
+const mat = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
 for (let i = 0; i < SQUARE * SQUARE; i++) {
-  boxes.push(
-    new THREE.Mesh(
-      new THREE.BoxBufferGeometry(size, size, size),
-      new THREE.MeshPhongMaterial({ color: 0x00ff00 })
-    )
-  );
+  const box = new THREE.Mesh(geo, mat);
+  boxes.push(box);
+  grid.add(box);
 }
 
 scene.add(grid);
@@ -59,8 +58,8 @@ const wave = makeWave((x) => Math.sin(x * 100) * 10);
 const stepper = makeStepper(0.001);
 let sea = makeSea(SQUARE);
 
-const square = makeSquare(SQUARE * SQUARE);
-const calc = calcTileDepth(square);
+const rectangle = makeRectangle(0, 0, SQUARE, SQUARE);
+const calc = makePointDepthCalculator(rectangle, makeRectangleUtils());
 
 const animate = function () {
   setTimeout(() => {
@@ -71,8 +70,8 @@ const animate = function () {
 
   for (var i = 0; i < SQUARE; i++) {
     for (var j = 0; j < SQUARE; j++) {
-      const tile = makeTile(j, i);
-      const depth = calc(tile);
+      const point = makePoint(j, i);
+      const depth = calc(point);
 
       const box = boxes[i * SQUARE + j];
 
