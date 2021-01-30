@@ -1,9 +1,11 @@
 import type { Point } from "./point";
 import type { Rectangle } from "./rectangle";
+import type { Circle } from "./circle";
 import { makeRectangleUtils } from "./rectangle";
+import { makeCircleUtils } from "./circle";
 
-export type ShapeType = "rectangle";
-export type Shape = Rectangle;
+export type ShapeType = "rectangle" | "circle";
+export type Shape = Rectangle | Circle;
 export type AbstractShape<T extends Shape> = {
   type: ShapeType;
   shape: T;
@@ -40,5 +42,7 @@ export function makeShapeUtils<T extends Shape>(
   switch (getShapeType(shape)) {
     case "rectangle":
       return makeRectangleUtils();
+    case "circle":
+      return makeCircleUtils();
   }
 }
