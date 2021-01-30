@@ -1,5 +1,5 @@
-import type { Shape, AbstractShape, Point } from "./shapes";
-import { makeShapeUtils, getShape } from "./shapes";
+import type { Shape, AbstractShape, Point } from "../shapes";
+import { makeShapeUtils, getShape } from "../shapes";
 
 export function getMaxWaveDepth<T extends Shape, U extends Shape>(
   baseShape: AbstractShape<T>,
