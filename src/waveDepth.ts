@@ -28,6 +28,6 @@ export function makeShapeLayerCalculator<T extends Shape>(
       return helper(layer + 1, shapeUtils.extend(shape));
     };
 
-    return helper(0, shapeUtils.getCentralShape(getShape(shape)));
+    return helper(0, getShape(shape));
   };
 }
