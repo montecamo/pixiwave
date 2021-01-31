@@ -1,5 +1,5 @@
 import type { AbstractShape, Shape, Point } from "../shapes";
-import type { Sinusoid, WavePartsCache } from "../utils";
+import type { WavePartsCache } from "../utils";
 
 import type { Wave, WaveShaker } from "../wave";
 import { makeWavePartCalculator } from "../utils";
