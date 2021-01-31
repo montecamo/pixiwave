@@ -31,18 +31,25 @@ export function getShape<T extends Shape>(shape: AbstractShape<T>): T {
 export type ShapeUtils<T extends Shape> = {
   contains: (T) => (Point) => boolean;
   extend: (T) => Shape;
-  getCentralShape: (T) => Shape;
+  getCentralShape: (T) => T;
   getCenter: (T) => Point;
   getExtremePoints: (T) => Array<Point>;
+  makeBasic: (Point, size?: number) => T;
 };
 
-export function makeShapeUtils<T extends Shape>(
-  shape: AbstractShape<T>
+export function makeShapeUtilsByType<T extends Shape>(
+  type: ShapeType
 ): ShapeUtils<T> {
-  switch (getShapeType(shape)) {
+  switch (type) {
     case "rectangle":
       return makeRectangleUtils();
     case "circle":
       return makeCircleUtils();
   }
+}
+
+export function makeShapeUtils<T extends Shape>(
+  shape: AbstractShape<T>
+): ShapeUtils<T> {
+  return makeShapeUtilsByType(getShapeType(shape));
 }

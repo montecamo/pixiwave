@@ -24,6 +24,10 @@ export function makeRectangle(
   return { center, width, height };
 }
 
+export function makeBasicRectangle(center: Point, size: number = 1): Rectangle {
+  return makeRectangle(center, size, size);
+}
+
 function getRectangleCenter(rect: Rectangle): Point {
   return rect.center;
 }
@@ -82,5 +86,6 @@ export function makeRectangleUtils(): ShapeUtils<Rectangle> {
     getCenter: getRectangleCenter,
     contains: isPointInRectangle,
     extend: extendRectangle,
+    makeBasic: makeBasicRectangle,
   };
 }

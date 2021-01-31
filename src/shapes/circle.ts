@@ -13,6 +13,10 @@ export function makeCircle(center: Point, radius: number): Circle {
   return { center, radius };
 }
 
+export function makeBasicCircle(center: Point, size: number = 0.5): Circle {
+  return makeCircle(center, size);
+}
+
 function getCircleCenter(circle: Circle): Point {
   return circle.center;
 }
@@ -55,5 +59,6 @@ export function makeCircleUtils(): ShapeUtils<Circle> {
     getCenter: getCircleCenter,
     contains: isPointInCircle,
     extend: extendCircle,
+    makeBasic: makeBasicCircle,
   };
 }
