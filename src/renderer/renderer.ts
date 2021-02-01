@@ -13,6 +13,7 @@ import {
   makePoint,
   getPointX,
   getPointY,
+  interfereWaves,
 } from "../abstractShapes";
 
 type RenderWaves = Array<WaveShape<Shape>>;
@@ -82,7 +83,7 @@ export function renderRenderState(
       makePoint(
         getPointX(point),
         getPointY(point),
-        Math.max(...waves.map((wave) => getWaveShapeDepth(wave)(point)))
+        interfereWaves(waves.map((wave) => getWaveShapeDepth(wave)(point)))
       )
     );
   });
