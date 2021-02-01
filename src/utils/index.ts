@@ -4,3 +4,4 @@ export * from "./stepper";
 export * from "./waveDepth";
 export * from "./sinusoid";
 export * from "./wavePartsCache";
+export * from "./stack";

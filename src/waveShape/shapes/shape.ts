@@ -5,6 +5,7 @@ import { makeRectangleUtils } from "./rectangle";
 import { makeCircleUtils } from "./circle";
 
 export type ShapeType = "rectangle" | "circle";
+export type ShapeSize = number;
 export type Shape = Rectangle | Circle;
 export type AbstractShape<T extends Shape> = {
   type: ShapeType;
@@ -16,6 +17,16 @@ export function makeShape<T extends Shape>(
   type: ShapeType
 ): AbstractShape<T> {
   return { type, shape };
+}
+
+export function makeBasicShape<T extends Shape>(
+  point: Point,
+  type: ShapeType,
+  size: ShapeSize
+): AbstractShape<T> {
+  const shapeUtils = makeShapeUtilsByType<T>(type);
+
+  return makeShape<T>(shapeUtils.makeBasic(point, size), type);
 }
 
 export function getShapeType<T extends Shape>(
