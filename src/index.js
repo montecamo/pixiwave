@@ -2,32 +2,17 @@
 import * as THREE from "three";
 import Stats from "stats.js";
 
-import { makeWave, makeWaveShaker, getWaveHeight } from "./wave";
 import {
   makePoint,
-  makeRectangle,
-  makeCircle,
-  makeShape,
-  makeShapeUtils,
-  getShape,
   getPointX,
   getPointY,
   getPointZ,
-} from "./shapes";
-import {
-  makeShapeLayerCalculator,
-  getMaxWaveLength,
-  makeStepper,
-  makeSinusoid,
-} from "./utils";
+  makeBasicBaseShape,
+  makeBasicWaveShape,
+} from "./abstractShapes";
+import { makeSinusoid } from "./utils";
 
-import {
-  makeRenderer,
-  spawnBaseShape,
-  makeRenderState,
-  makeWaveShapeSpawner,
-  getNextRenderState,
-} from "./renderer";
+import { makeRenderer } from "./renderer";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -49,7 +34,7 @@ const light = new THREE.DirectionalLight(color, intensity);
 light.position.set(-1, 2, 4);
 scene.add(light);
 
-camera.position.z = 300;
+camera.position.z = 50;
 camera.position.y = 0;
 camera.position.x = 0;
 
@@ -82,47 +67,24 @@ requestAnimationFrame(animatestats);
 // CORE CODE
 
 const centerPoint = makePoint(0, 0);
+const sinusoid = makeSinusoid(10, 10);
 
-const baseShape = spawnBaseShape(centerPoint, "rectangle", 50);
-const spawnWave = makeWaveShapeSpawner(baseShape);
-
-const wave = spawnWave(makePoint(-25, -25), "circle", {
-  frequency: 200,
-  amplitude: 10,
+const baseShape = makeBasicBaseShape(centerPoint, {
+  type: "rectangle",
+  size: 10,
 });
+const wave = makeBasicWaveShape(centerPoint, { type: "circle" }, sinusoid);
 
-const wave2 = spawnWave(makePoint(25, 25), "rectangle", {
-  frequency: 200,
-  amplitude: 10,
-});
+const SPACING = 2;
 
-const wave3 = spawnWave(makePoint(-25, 25), "circle", {
-  frequency: 200,
-  amplitude: 10,
-});
+const coreRenderer = makeRenderer(baseShape);
+coreRenderer.addWave(wave);
 
-const wave4 = spawnWave(makePoint(25, -25), "circle", {
-  frequency: 200,
-  amplitude: 10,
-});
-
-const wave5 = spawnWave(centerPoint, "circle", {
-  frequency: 200,
-  amplitude: 10,
-});
-
-const SPACING = 10;
-
-const renderState = makeRenderState(
-  [wave], //wave2 , wave3, wave4, wave5],
-  baseShape
-);
-
-function tick(state) {
-  const render = makeRenderer(state);
-
+function loop() {
   grid.clear();
-  render((point) => {
+
+  coreRenderer.tick();
+  coreRenderer.render((point) => {
     const box = new THREE.Mesh(geo, mat);
 
     box.position.x = getPointX(point) * SPACING;
@@ -136,10 +98,8 @@ function tick(state) {
   renderer.render(scene, camera);
 
   setTimeout(() => {
-    requestAnimationFrame(() => tick(getNextRenderState(state)));
+    requestAnimationFrame(loop);
   }, 30);
 }
 
-const one = renderState;
-
-tick(one);
+loop();

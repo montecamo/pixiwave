@@ -1,4 +1,4 @@
-import { square } from "../utils";
+import { square } from "../../utils";
 import type { Point } from "./point";
 import type { ShapeUtils } from "./shape";
 

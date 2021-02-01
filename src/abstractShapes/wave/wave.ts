@@ -4,19 +4,25 @@ export type WavePart = number;
 
 export type WaveFunction = (part: number) => WavePart;
 
-const VERTICAL_SPEED = 0.001;
+const VERTICAL_SPEED = 0.01;
 const WAVE_NEUTRAL = 0;
 
 export type Wave = {
+  start: WavePart;
   length: WaveLength;
   verticalSpeed: WaveSpeed;
 };
 
 export function makeWave(
+  start: WavePart = 0,
   length: WaveLength = 0,
   verticalSpeed: WaveSpeed = VERTICAL_SPEED
 ): Wave {
-  return { length, verticalSpeed };
+  return { length, verticalSpeed, start };
+}
+
+export function getWaveStart(wave: Wave): WavePart {
+  return wave.start;
 }
 
 export function getWaveLength(wave: Wave): WaveLength {
@@ -28,7 +34,7 @@ export function getWaveVerticalSpeed(wave: Wave): WaveLength {
 }
 
 export function increaseWave(wave: Wave): Wave {
-  return makeWave(getWaveLength(wave) + 1);
+  return makeWave(getWaveStart(wave) + VERTICAL_SPEED, getWaveLength(wave) + 1);
 }
 
 export function makeWavePartGetter(
@@ -39,6 +45,8 @@ export function makeWavePartGetter(
       return WAVE_NEUTRAL;
     }
 
-    return f(getWaveLength(wave) * getWaveVerticalSpeed(wave));
+    const res = f(getWaveStart(wave) - part * getWaveVerticalSpeed(wave));
+
+    return res;
   };
 }
