@@ -79,7 +79,7 @@ export function makeBasicWaveShape<T extends Shape>(
   return makeWaveShape(shape, wave, waveFunction);
 }
 
-export function updateBasicWaveShapeShape<T extends Shape>(
+export function updateWaveShapeShape<T extends Shape>(
   prevWaveShape: WaveShape<T>,
   shapeOptions: ShapeOptions
 ): WaveShape<T> {
@@ -98,7 +98,7 @@ export function updateBasicWaveShapeShape<T extends Shape>(
   return makeWaveShape(shape, wave, waveFunction);
 }
 
-export function updateBasicWaveShapeFunction<T extends Shape>(
+export function updateWaveShapeFunction<T extends Shape>(
   prevWaveShape: WaveShape<T>,
   waveFunction: WaveFunction
 ): WaveShape<T> {

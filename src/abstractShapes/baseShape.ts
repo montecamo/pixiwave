@@ -27,7 +27,7 @@ export function makeBasicBaseShape<T extends Shape>(
   return makeShape<T>(makeBasic(point, shapeOptions.size), shapeOptions.type);
 }
 
-export function updateBasicBaseShapeShape<T extends Shape>(
+export function updateBaseShapeShape<T extends Shape>(
   prevShape: BaseShape<T>,
   shapeOptions: ShapeOptions
 ): AbstractShape<T> {
@@ -35,4 +35,12 @@ export function updateBasicBaseShapeShape<T extends Shape>(
   const prevShapeCenter = prevShapeUtils.getCenter(getShape(prevShape));
 
   return makeBasicBaseShape<T>(prevShapeCenter, shapeOptions);
+}
+
+export function getBaseShapePoints<T extends Shape>(
+  shape: BaseShape<T>
+): Array<Point> {
+  const shapeUtils = makeShapeUtils(shape);
+
+  return shapeUtils.getPoints(getShape(shape));
 }
