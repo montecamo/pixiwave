@@ -79,6 +79,22 @@ function isPointInRectangle(rect: Rectangle): (point: Point) => boolean {
   };
 }
 
+function getRectanglePoints(rect: Rectangle): Array<Point> {
+  const [topLeft, , bottomRight] = getRectangleExtremePoints(rect);
+
+  let points = [];
+
+  for (let y = getPointY(topLeft); y <= getPointY(bottomRight); y++) {
+    for (let x = getPointX(topLeft); x <= getPointX(bottomRight); x++) {
+      if (isPointInRectangle(rect)(makePoint(x, y))) {
+        points.push(makePoint(x, y));
+      }
+    }
+  }
+
+  return points;
+}
+
 export function makeRectangleUtils(): ShapeUtils<Rectangle> {
   return {
     getCentralShape: getRectangleCentralShape,
@@ -87,5 +103,6 @@ export function makeRectangleUtils(): ShapeUtils<Rectangle> {
     contains: isPointInRectangle,
     extend: extendRectangle,
     makeBasic: makeBasicRectangle,
+    getPoints: getRectanglePoints,
   };
 }

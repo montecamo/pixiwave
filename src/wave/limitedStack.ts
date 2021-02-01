@@ -5,7 +5,7 @@ export function makeStack<T>(length: number): (value: T) => Stack<T> {
 }
 
 export function pushStack<T>(stack: Stack<T>): (value: T) => Stack<T> {
-  return (value) => stack.slice(1).concat(value);
+  return (value) => [value].concat(stack.slice(0, -1));
 }
 
 export function getStackLength<T>(stack: Stack<T>): number {

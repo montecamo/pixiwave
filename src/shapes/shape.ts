@@ -35,6 +35,7 @@ export type ShapeUtils<T extends Shape> = {
   getCenter: (T) => Point;
   getExtremePoints: (T) => Array<Point>;
   makeBasic: (Point, size?: number) => T;
+  getPoints: (T) => Array<Point>;
 };
 
 export function makeShapeUtilsByType<T extends Shape>(
