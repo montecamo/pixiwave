@@ -34,7 +34,7 @@ const light = new THREE.DirectionalLight(color, intensity);
 light.position.set(-1, 2, 4);
 scene.add(light);
 
-camera.position.z = 50;
+camera.position.z = 400;
 camera.position.y = 0;
 camera.position.x = 0;
 
@@ -67,15 +67,24 @@ requestAnimationFrame(animatestats);
 // CORE CODE
 
 const centerPoint = makePoint(0, 0);
-const sinusoid = makeSinusoid(10, 10);
+const sinusoid = makeSinusoid(20, 10);
 
 const baseShape = makeBasicBaseShape(centerPoint, {
   type: "rectangle",
-  size: 10,
+  size: 41,
 });
-const wave = makeBasicWaveShape(centerPoint, { type: "circle" }, sinusoid);
+const wave = makeBasicWaveShape(
+  makePoint(-20, -20),
+  { type: "circle" },
+  sinusoid
+);
+const wave2 = makeBasicWaveShape(
+  makePoint(20, 20),
+  { type: "circle" },
+  sinusoid
+);
 
-const SPACING = 2;
+const SPACING = 10;
 
 const coreRenderer = makeRenderer(baseShape);
 coreRenderer.addWave(wave);
@@ -90,7 +99,7 @@ function loop() {
     box.position.x = getPointX(point) * SPACING;
     box.position.y = getPointY(point) * SPACING;
 
-    box.position.z = getPointZ(point);
+    box.position.z = -getPointZ(point);
 
     grid.add(box);
   });
