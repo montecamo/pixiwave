@@ -80,10 +80,10 @@ export function makeBasicWaveShape<T extends Shape>(
 }
 
 export function updateBasicWaveShapeShape<T extends Shape>(
-  waveShape: WaveShape<T>,
+  prevWaveShape: WaveShape<T>,
   shapeOptions: ShapeOptions
 ): WaveShape<T> {
-  const prevShape = getWaveShapeShape(waveShape);
+  const prevShape = getWaveShapeShape(prevWaveShape);
   const prevShapeUtils = makeShapeUtils(prevShape);
   const prevShapeCenter = prevShapeUtils.getCenter(getShape(prevShape));
 
@@ -92,18 +92,18 @@ export function updateBasicWaveShapeShape<T extends Shape>(
     shapeOptions.type,
     shapeOptions.size
   );
-  const wave = getWaveShapeWave(waveShape);
-  const waveFunction = getWaveShapeWaveFunction(waveShape);
+  const wave = getWaveShapeWave(prevWaveShape);
+  const waveFunction = getWaveShapeWaveFunction(prevWaveShape);
 
   return makeWaveShape(shape, wave, waveFunction);
 }
 
 export function updateBasicWaveShapeFunction<T extends Shape>(
-  waveShape: WaveShape<T>,
+  prevWaveShape: WaveShape<T>,
   waveFunction: WaveFunction
 ): WaveShape<T> {
-  const shape = getWaveShapeShape(waveShape);
-  const wave = getWaveShapeWave(waveShape);
+  const shape = getWaveShapeShape(prevWaveShape);
+  const wave = getWaveShapeWave(prevWaveShape);
 
   return makeWaveShape(shape, wave, waveFunction);
 }
