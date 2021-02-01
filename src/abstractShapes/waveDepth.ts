@@ -1,5 +1,5 @@
 import type { Shape, AbstractShape, Point } from "./shapes";
-import { makeShapeUtils, getShape } from "./shapes";
+import { makeShapeUtils, getShape, distanceBetweenPoints } from "./shapes";
 
 export function getMaxWaveLength<T extends Shape, U extends Shape>(
   baseShape: AbstractShape<T>,
@@ -18,16 +18,9 @@ export function makeWaveDepthCalculator<T extends Shape>(
   shape: AbstractShape<T>
 ): (Point) => number {
   const shapeUtils = makeShapeUtils(shape);
+  const centerPoint = shapeUtils.getCenter(getShape(shape));
 
   return (point) => {
-    const helper = (layer: number, shape: Shape) => {
-      if (shapeUtils.contains(shape)(point)) {
-        return layer;
-      }
-
-      return helper(layer + 1, shapeUtils.extend(shape));
-    };
-
-    return helper(0, getShape(shape));
+    return distanceBetweenPoints(centerPoint, point);
   };
 }

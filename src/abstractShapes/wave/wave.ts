@@ -45,8 +45,6 @@ export function makeWavePartGetter(
       return WAVE_NEUTRAL;
     }
 
-    const res = f(getWaveStart(wave) - part * getWaveVerticalSpeed(wave));
-
-    return res;
+    return f(getWaveStart(wave) - part * getWaveVerticalSpeed(wave));
   };
 }
