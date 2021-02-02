@@ -40,9 +40,9 @@ export function increaseWave(wave: Wave): Wave {
   return makeWave(getWaveStart(wave) + WAVE_SPEED, getWaveLength(wave) + 1);
 }
 
-export function makeWavePartGetter(
-  f: AbstractWaveFunction
-): (wave: Wave) => (part: number) => AbstractWavePart {
+export function makeWavePartGetter({
+  f,
+}: AbstractWaveFunction): (wave: Wave) => (part: number) => AbstractWavePart {
   return (wave) => (part) => {
     if (getWaveLength(wave) < part) {
       return WAVE_NEUTRAL;

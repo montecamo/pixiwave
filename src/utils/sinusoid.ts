@@ -1,12 +1,17 @@
-export type Sinusoid = (x: number) => number;
+export type Sinusoid = {
+  f: (x: number) => number;
+  frequency: number;
+  amplitude: number;
+};
 
 export function makeSinusoid(frequency: number, amplitude: number): Sinusoid {
   function sinusoid(x) {
     return Math.sin(x * frequency) * amplitude;
   }
 
-  sinusoid.frequency = frequency;
-  sinusoid.amplitude = amplitude;
-
-  return sinusoid;
+  return {
+    f: sinusoid,
+    frequency,
+    amplitude,
+  };
 }

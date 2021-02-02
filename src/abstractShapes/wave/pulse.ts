@@ -37,12 +37,12 @@ export function increasePulse(pulse: Pulse): Pulse {
   );
 }
 
-export function makePulsePartGetter(
-  f: AbstractWaveFunction
-): (pulse: Pulse) => (part: number) => AbstractWavePart {
+export function makePulsePartGetter({
+  f,
+  frequency,
+}: AbstractWaveFunction): (pulse: Pulse) => (part: number) => AbstractWavePart {
   return (pulse) => (part) => {
-    // @ts-ignore
-    const start = getPulseDistance(pulse) - Math.PI / f.frequency;
+    const start = getPulseDistance(pulse) - Math.PI / frequency;
     const end = getPulseDistance(pulse);
 
     if (part < start || end < part) {

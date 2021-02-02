@@ -12,7 +12,12 @@ export type AbstractWave<T = AbstractWaveWave, U = AbstractWaveType> = {
   type: U;
 };
 
-export type AbstractWaveFunction = (part: number) => number;
+export type AbstractWaveFunction = {
+  f: (part: number) => number;
+  frequency: number;
+  amplitude: number;
+};
+
 export type AbstractWavePart = number;
 export type AbstractWavePartGetter = (
   wave: AbstractWave
