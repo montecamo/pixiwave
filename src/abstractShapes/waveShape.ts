@@ -7,25 +7,37 @@ import type {
 } from "./shapes";
 import { makeBasicShape, makeShapeUtils, getShape } from "./shapes";
 
-import type { Wave, WaveFunction } from "./wave";
-import { increaseWave, makeWavePartGetter, makeWave } from "./wave";
+import type {
+  AbstractWave,
+  AbstractWaveType,
+  AbstractWaveFunction,
+} from "./wave";
+import {
+  increaseAbstractWave,
+  makeAbstractWavePartGetter,
+  makeAbstractWaveOfType,
+} from "./wave";
 
 import { makeWaveDepthCalculator } from "./waveDepth";
 
 export type WaveShape<T extends Shape> = {
   shape: AbstractShape<T>;
-  wave: Wave;
-  waveFunction: WaveFunction;
+  wave: AbstractWave;
+  waveFunction: AbstractWaveFunction;
 };
 type ShapeOptions = {
   size: ShapeSize;
   type: ShapeType;
 };
+type WaveOptions = {
+  function: AbstractWaveFunction;
+  type: AbstractWaveType;
+};
 
 function makeWaveShape<T extends Shape>(
   shape: AbstractShape<T>,
-  wave: Wave,
-  waveFunction: WaveFunction
+  wave: AbstractWave,
+  waveFunction: AbstractWaveFunction
 ): WaveShape<T> {
   return { shape, wave, waveFunction };
 }
@@ -35,12 +47,14 @@ function getWaveShapeShape<T extends Shape>(
 ): AbstractShape<T> {
   return waveShape.shape;
 }
-function getWaveShapeWave<T extends Shape>(waveShape: WaveShape<T>): Wave {
+function getWaveShapeWave<T extends Shape>(
+  waveShape: WaveShape<T>
+): AbstractWave {
   return waveShape.wave;
 }
 function getWaveShapeWaveFunction<T extends Shape>(
   waveShape: WaveShape<T>
-): WaveFunction {
+): AbstractWaveFunction {
   return waveShape.waveFunction;
 }
 
@@ -54,7 +68,7 @@ export function getWaveShapeDepth<T extends Shape>(
 
     const part = makeWaveDepthCalculator(shape)(point);
 
-    return makeWavePartGetter(waveFunction)(wave)(part);
+    return makeAbstractWavePartGetter(waveFunction)(wave)(part);
   };
 }
 
@@ -65,18 +79,18 @@ export function increaseWaveShape<T extends Shape>(
   const wave = getWaveShapeWave(waveShape);
   const waveFunction = getWaveShapeWaveFunction(waveShape);
 
-  return makeWaveShape(shape, increaseWave(wave), waveFunction);
+  return makeWaveShape(shape, increaseAbstractWave(wave), waveFunction);
 }
 
 export function makeBasicWaveShape<T extends Shape>(
   point: Point,
   shapeOptions: ShapeOptions,
-  waveFunction: WaveFunction
+  waveOptions: WaveOptions
 ): WaveShape<T> {
   const shape = makeBasicShape<T>(point, shapeOptions.type, shapeOptions.size);
-  const wave = makeWave();
+  const wave = makeAbstractWaveOfType(waveOptions.type);
 
-  return makeWaveShape(shape, wave, waveFunction);
+  return makeWaveShape(shape, wave, waveOptions.function);
 }
 
 export function updateWaveShapeShape<T extends Shape>(
@@ -100,7 +114,7 @@ export function updateWaveShapeShape<T extends Shape>(
 
 export function updateWaveShapeFunction<T extends Shape>(
   prevWaveShape: WaveShape<T>,
-  waveFunction: WaveFunction
+  waveFunction: AbstractWaveFunction
 ): WaveShape<T> {
   const shape = getWaveShapeShape(prevWaveShape);
   const wave = getWaveShapeWave(prevWaveShape);

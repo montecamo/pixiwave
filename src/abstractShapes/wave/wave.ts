@@ -1,50 +1,62 @@
+import type {
+  AbstractWaveUtils,
+  AbstractWaveFunction,
+  AbstractWavePart,
+} from "./abstract";
+
 export type WaveLength = number;
 export type WaveSpeed = number;
-export type WavePart = number;
 
-export type WaveFunction = (part: number) => WavePart;
-
-const VERTICAL_SPEED = 0.01;
+const WAVE_SPEED = 1;
 const WAVE_NEUTRAL = 0;
 
 export type Wave = {
-  start: WavePart;
+  start: AbstractWavePart;
   length: WaveLength;
-  verticalSpeed: WaveSpeed;
+  speed: WaveSpeed;
 };
 
 export function makeWave(
-  start: WavePart = 0,
+  start: AbstractWavePart = 0,
   length: WaveLength = 0,
-  verticalSpeed: WaveSpeed = VERTICAL_SPEED
+  speed: WaveSpeed = WAVE_SPEED
 ): Wave {
-  return { length, verticalSpeed, start };
+  return { length, speed, start };
 }
 
-export function getWaveStart(wave: Wave): WavePart {
+function getWaveStart(wave: Wave): AbstractWavePart {
   return wave.start;
 }
 
-export function getWaveLength(wave: Wave): WaveLength {
+function getWaveLength(wave: Wave): WaveLength {
   return wave.length;
 }
 
-export function getWaveVerticalSpeed(wave: Wave): WaveLength {
-  return wave.verticalSpeed;
+function getWaveSpeed(wave: Wave): WaveLength {
+  return wave.speed;
 }
 
 export function increaseWave(wave: Wave): Wave {
-  return makeWave(getWaveStart(wave) + VERTICAL_SPEED, getWaveLength(wave) + 1);
+  return makeWave(getWaveStart(wave) + WAVE_SPEED, getWaveLength(wave) + 1);
 }
 
 export function makeWavePartGetter(
-  f: WaveFunction
-): (wave: Wave) => (part: number) => WavePart {
+  f: AbstractWaveFunction
+): (wave: Wave) => (part: number) => AbstractWavePart {
   return (wave) => (part) => {
     if (getWaveLength(wave) < part) {
       return WAVE_NEUTRAL;
     }
 
-    return f(getWaveStart(wave) - part * getWaveVerticalSpeed(wave));
+    return f(getWaveStart(wave) - part * getWaveSpeed(wave));
+  };
+}
+
+export function makeWaveUtils(): AbstractWaveUtils<Wave> {
+  return {
+    makePartGetter: makeWavePartGetter,
+    increase: increaseWave,
+    getDistance: () => Infinity,
+    make: makeWave,
   };
 }

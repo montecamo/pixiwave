@@ -1,2 +1,2 @@
-export * from "./wave";
 export * from "./interference";
+export * from "./abstract";
