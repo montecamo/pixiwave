@@ -4,6 +4,8 @@ import { makeWaveUtils } from "./wave";
 import type { Pulse } from "./pulse";
 import { makePulseUtils } from "./pulse";
 
+import type { WaveFunction } from "./function";
+
 export type AbstractWaveType = "wave" | "pulse";
 export type AbstractWaveWave = Wave | Pulse;
 
@@ -12,11 +14,7 @@ export type AbstractWave<T = AbstractWaveWave, U = AbstractWaveType> = {
   type: U;
 };
 
-export type AbstractWaveFunction = {
-  f: (part: number) => number;
-  frequency: number;
-  amplitude: number;
-};
+export type AbstractWaveFunction = WaveFunction;
 
 export type AbstractWavePart = number;
 export type AbstractWavePartGetter = (

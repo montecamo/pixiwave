@@ -3,6 +3,7 @@ import type {
   AbstractWaveFunction,
   AbstractWavePart,
 } from "./abstract";
+import { getWaveFunctionFunction, getWaveFunctionFrequency } from "./function";
 
 export type PulseSpeed = number;
 export type PulseDistance = number;
@@ -37,19 +38,20 @@ export function increasePulse(pulse: Pulse): Pulse {
   );
 }
 
-export function makePulsePartGetter({
-  f,
-  frequency,
-}: AbstractWaveFunction): (pulse: Pulse) => (part: number) => AbstractWavePart {
+export function makePulsePartGetter(
+  waveFunction: AbstractWaveFunction
+): (pulse: Pulse) => (part: number) => AbstractWavePart {
   return (pulse) => (part) => {
-    const start = getPulseDistance(pulse) - Math.PI / frequency;
+    const start =
+      getPulseDistance(pulse) -
+      Math.PI / getWaveFunctionFrequency(waveFunction);
     const end = getPulseDistance(pulse);
 
     if (part < start || end < part) {
       return PULSE_NEUTRAL;
     }
 
-    return f(part - start);
+    return getWaveFunctionFunction(waveFunction)(part - start);
   };
 }
 
