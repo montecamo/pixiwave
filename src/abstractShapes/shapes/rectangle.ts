@@ -1,5 +1,4 @@
 import type { Point } from "./point";
-import type { ShapeUtils } from "./shape";
 
 import { makePoint, getPointX, getPointY } from "./point";
 
@@ -28,7 +27,7 @@ export function makeBasicRectangle(center: Point, size: number = 1): Rectangle {
   return makeRectangle(center, size, size);
 }
 
-function getRectangleCenter(rect: Rectangle): Point {
+export function getRectangleCenter(rect: Rectangle): Point {
   return rect.center;
 }
 
@@ -40,11 +39,11 @@ function getRectangleHeight(rect: Rectangle): number {
   return rect.height;
 }
 
-function getRectangleCentralShape(rect: Rectangle): Rectangle {
+export function getRectangleCentralRectangle(rect: Rectangle): Rectangle {
   return makeRectangle(getRectangleCenter(rect), 1, 1);
 }
 
-function extendRectangle(rect: Rectangle): Rectangle {
+export function extendRectangle(rect: Rectangle): Rectangle {
   return makeRectangle(
     getRectangleCenter(rect),
     getRectangleWidth(rect) + 2,
@@ -66,7 +65,7 @@ export function getRectangleExtremePoints(rect: Rectangle): Array<Point> {
   ];
 }
 
-function isPointInRectangle(rect: Rectangle): (point: Point) => boolean {
+export function isPointInRectangle(rect: Rectangle): (point: Point) => boolean {
   const [topLeft, , bottomRight] = getRectangleExtremePoints(rect);
 
   return (point) => {
@@ -79,7 +78,7 @@ function isPointInRectangle(rect: Rectangle): (point: Point) => boolean {
   };
 }
 
-function getRectanglePoints(rect: Rectangle): Array<Point> {
+export function getRectanglePoints(rect: Rectangle): Array<Point> {
   const [topLeft, , bottomRight] = getRectangleExtremePoints(rect);
 
   let points = [];
@@ -93,16 +92,4 @@ function getRectanglePoints(rect: Rectangle): Array<Point> {
   }
 
   return points;
-}
-
-export function makeRectangleUtils(): ShapeUtils<Rectangle> {
-  return {
-    getCentralShape: getRectangleCentralShape,
-    getExtremePoints: getRectangleExtremePoints,
-    getCenter: getRectangleCenter,
-    contains: isPointInRectangle,
-    extend: extendRectangle,
-    makeBasic: makeBasicRectangle,
-    getPoints: getRectanglePoints,
-  };
 }

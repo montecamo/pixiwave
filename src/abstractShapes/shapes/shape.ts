@@ -1,67 +1,70 @@
+import {
+  attachTag,
+  getTaggedType,
+  getTaggedData,
+  getTagsTable,
+} from "../../utils";
+import type { TaggedData } from "../../utils";
+
 import type { Point } from "./point";
 import type { Rectangle } from "./rectangle";
 import type { Circle } from "./circle";
-import { makeRectangleUtils } from "./rectangle";
-import { makeCircleUtils } from "./circle";
+
+import { initTagsTable } from "./tagsTable";
 
 export type ShapeType = "rectangle" | "circle";
 export type ShapeSize = number;
-export type Shape = Rectangle | Circle;
-export type AbstractShape<T extends Shape> = {
-  type: ShapeType;
-  shape: T;
-};
+export type RawShape = Rectangle | Circle;
+export type Shape = TaggedData<ShapeType, RawShape>;
 
-export function makeShape<T extends Shape>(
-  shape: T,
-  type: ShapeType
-): AbstractShape<T> {
-  return { type, shape };
+const utilsTable = initTagsTable();
+
+function operate<T>(shape: Shape, util: string): T {
+  const func = getTagsTable(utilsTable, getTaggedType(shape), util);
+
+  if (!func) {
+    throw new Error("Unexpected data type or function type");
+  }
+
+  return func(getTaggedData(shape));
+}
+function makeShapeSuccessor(shape: Shape, rawShape: RawShape): Shape {
+  return attachTag(getTaggedType(shape), rawShape);
 }
 
-export function makeBasicShape<T extends Shape>(
+export function makeBasicShape(
   point: Point,
   type: ShapeType,
   size: ShapeSize
-): AbstractShape<T> {
-  const shapeUtils = makeShapeUtilsByType<T>(type);
+): Shape {
+  const func = getTagsTable(utilsTable, type, "makeBasic");
 
-  return makeShape<T>(shapeUtils.makeBasic(point, size), type);
-}
-
-export function getShapeType<T extends Shape>(
-  shape: AbstractShape<T>
-): ShapeType {
-  return shape.type;
-}
-
-export function getShape<T extends Shape>(shape: AbstractShape<T>): T {
-  return shape.shape;
-}
-
-export type ShapeUtils<T extends Shape> = {
-  contains: (T) => (Point) => boolean;
-  extend: (T) => Shape;
-  getCentralShape: (T) => T;
-  getCenter: (T) => Point;
-  getExtremePoints: (T) => Array<Point>;
-  makeBasic: (Point, size?: number) => T;
-  getPoints: (T) => Array<Point>;
-};
-
-export function makeShapeUtilsByType<T extends Shape>(
-  type: ShapeType
-): ShapeUtils<T> {
-  switch (type) {
-    case "rectangle":
-      return makeRectangleUtils();
-    case "circle":
-      return makeCircleUtils();
+  if (!func) {
+    throw new Error("Unexpected data type or function type");
   }
+
+  return attachTag(type, func(point, size));
 }
 
-export function makeShapeUtils<T extends Shape>(
-  shape: AbstractShape<T>
-): ShapeUtils<T> {
-  return makeShapeUtilsByType(getShapeType(shape));
+export function getShapeCenter(shape: Shape): Point {
+  return operate<Point>(shape, "getCenter");
+}
+
+export function extendShape(shape: Shape): Shape {
+  return makeShapeSuccessor(shape, operate<RawShape>(shape, "extend"));
+}
+
+export function getShapeCentralShape(shape: Shape): Shape {
+  return makeShapeSuccessor(shape, operate<RawShape>(shape, "getCentralShape"));
+}
+
+export function isPointInShape(shape: Shape, point: Point): boolean {
+  return operate<(point: Point) => boolean>(shape, "containsPoint")(point);
+}
+
+export function getShapePoints(shape: Shape): Array<Point> {
+  return operate<Array<Point>>(shape, "getPoints");
+}
+export function getShapeExtremePoints(shape: Shape): Array<Point> {
+  return operate<Array<Point>>(shape, "getExtremePoints");
 }
