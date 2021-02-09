@@ -1,46 +1,28 @@
-import type {
-  Shape,
-  Point,
-  ShapeType,
-  AbstractShape,
-  ShapeSize,
-} from "./shapes";
-import {
-  makeShapeUtilsByType,
-  makeShapeUtils,
-  makeShape,
-  getShape,
-} from "./shapes";
+import type { Point, ShapeType, Shape, ShapeSize } from "./shapes";
+import { makeBasicShape, getShapeCenter, getShapePoints } from "./shapes";
 
-export type BaseShape<T extends Shape> = AbstractShape<T>;
+export type BaseShape = Shape;
 export type ShapeOptions = {
   size: ShapeSize;
   type: ShapeType;
 };
 
-export function makeBasicBaseShape<T extends Shape>(
+export function makeBasicBaseShape(
   point: Point,
   shapeOptions: ShapeOptions
-): BaseShape<T> {
-  const { makeBasic } = makeShapeUtilsByType<T>(shapeOptions.type);
-
-  return makeShape<T>(makeBasic(point, shapeOptions.size), shapeOptions.type);
+): BaseShape {
+  return makeBasicShape(point, shapeOptions.type, shapeOptions.size);
 }
 
-export function updateBaseShapeShape<T extends Shape>(
-  prevShape: BaseShape<T>,
+export function updateBaseShapeShape(
+  prevShape: BaseShape,
   shapeOptions: ShapeOptions
-): AbstractShape<T> {
-  const prevShapeUtils = makeShapeUtils(prevShape);
-  const prevShapeCenter = prevShapeUtils.getCenter(getShape(prevShape));
+): Shape {
+  const prevShapeCenter = getShapeCenter(prevShape);
 
-  return makeBasicBaseShape<T>(prevShapeCenter, shapeOptions);
+  return makeBasicBaseShape(prevShapeCenter, shapeOptions);
 }
 
-export function getBaseShapePoints<T extends Shape>(
-  shape: BaseShape<T>
-): Array<Point> {
-  const shapeUtils = makeShapeUtils(shape);
-
-  return shapeUtils.getPoints(getShape(shape));
+export function getBaseShapePoints(shape: BaseShape): Array<Point> {
+  return getShapePoints(shape);
 }
