@@ -1,3 +1,3 @@
 export * from "./interference";
-export * from "./abstract";
+export * from "./wave";
 export * from "./function";

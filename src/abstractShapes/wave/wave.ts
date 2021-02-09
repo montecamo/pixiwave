@@ -1,65 +1,64 @@
-import type {
-  AbstractWaveUtils,
-  AbstractWaveFunction,
-  AbstractWavePart,
-} from "./abstract";
-import { getWaveFunctionFunction } from "./function";
+import {
+  getTagsTable,
+  attachTag,
+  getTaggedType,
+  getTaggedData,
+} from "../../utils";
+import type { TaggedData } from "../../utils";
+import type { InfiniteWave } from "./infiniteWave";
+import type { Pulse } from "./pulse";
 
+import type { WaveFunction } from "./function";
+
+import { initTagsTable } from "./tagsTable";
+
+export type WaveType = "infinite" | "pulse";
+export type RawWave = InfiniteWave | Pulse;
+
+export type Wave = TaggedData<WaveType, RawWave>;
+
+export type WavePart = number;
+export type WavePartGetter = (part: number) => WavePart;
+export type WaveDistance = number;
 export type WaveLength = number;
 export type WaveSpeed = number;
 
-const WAVE_SPEED = 1;
-const WAVE_NEUTRAL = 0;
+const utilsTable = initTagsTable();
 
-export type Wave = {
-  start: AbstractWavePart;
-  length: WaveLength;
-  speed: WaveSpeed;
-};
+function operate<T>(wave: Wave, util: string): T {
+  const func = getTagsTable(utilsTable, getTaggedType(wave), util);
 
-export function makeWave(
-  start: AbstractWavePart = 0,
-  length: WaveLength = 0,
-  speed: WaveSpeed = WAVE_SPEED
-): Wave {
-  return { length, speed, start };
+  if (!func) {
+    throw new Error("Unexpected data type or function type");
+  }
+
+  return func(getTaggedData(wave));
 }
-
-function getWaveStart(wave: Wave): AbstractWavePart {
-  return wave.start;
-}
-
-function getWaveLength(wave: Wave): WaveLength {
-  return wave.length;
-}
-
-function getWaveSpeed(wave: Wave): WaveLength {
-  return wave.speed;
+function makeWaveSuccessor(wave: Wave, rawWave: RawWave): Wave {
+  return attachTag(getTaggedType(wave), rawWave);
 }
 
 export function increaseWave(wave: Wave): Wave {
-  return makeWave(getWaveStart(wave) + WAVE_SPEED, getWaveLength(wave) + 1);
+  return makeWaveSuccessor(wave, operate<RawWave>(wave, "increase"));
 }
 
-export function makeWavePartGetter(
-  waveFunction: AbstractWaveFunction
-): (wave: Wave) => (part: number) => AbstractWavePart {
-  return (wave) => (part) => {
-    if (getWaveLength(wave) < part) {
-      return WAVE_NEUTRAL;
-    }
-
-    return getWaveFunctionFunction(waveFunction)(
-      getWaveStart(wave) - part * getWaveSpeed(wave)
-    );
-  };
+export function getWavePart(wave: Wave): WavePartGetter {
+  return operate<WavePartGetter>(wave, "makePartGetter");
 }
 
-export function makeWaveUtils(): AbstractWaveUtils<Wave> {
-  return {
-    makePartGetter: makeWavePartGetter,
-    increase: increaseWave,
-    getDistance: () => Infinity,
-    make: makeWave,
-  };
+export function getWaveDistance(wave: Wave): WaveDistance {
+  return operate(wave, "getDistance");
+}
+
+export function makeBasicWave(
+  type: WaveType,
+  waveFunction: WaveFunction
+): Wave {
+  const func = getTagsTable(utilsTable, type, "makeBasic");
+
+  if (!func) {
+    throw new Error("Unexpected data type or function type");
+  }
+
+  return attachTag(type, func(waveFunction));
 }

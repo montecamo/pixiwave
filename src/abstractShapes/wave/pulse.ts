@@ -1,47 +1,52 @@
-import type {
-  AbstractWaveUtils,
-  AbstractWaveFunction,
-  AbstractWavePart,
-} from "./abstract";
+import type { WavePart, WaveSpeed, WaveDistance, WavePartGetter } from "./wave";
+import type { WaveFunction } from "./function";
 import { getWaveFunctionFunction, getWaveFunctionFrequency } from "./function";
-
-export type PulseSpeed = number;
-export type PulseDistance = number;
 
 const PULSE_SPEED = 1;
 const PULSE_NEUTRAL = 0;
 
 export type Pulse = {
-  distance: PulseDistance;
-  speed: PulseSpeed;
+  func: WaveFunction;
+  distance: WaveDistance;
+  speed: WaveSpeed;
 };
 
-export function makePulse(
-  speed: PulseSpeed = PULSE_SPEED,
-  distance: number = 0
+function makePulse(
+  func: WaveFunction,
+  speed: WaveSpeed,
+  distance: number
 ): Pulse {
-  return { speed, distance };
+  return { func, speed, distance };
 }
 
-function getPulseDistance(pulse: Pulse): AbstractWavePart {
+export function makeBasicPulse(func: WaveFunction): Pulse {
+  return makePulse(func, PULSE_SPEED, 0);
+}
+
+export function getPulseDistance(pulse: Pulse): WavePart {
   return pulse.distance;
 }
 
-function getPulseSpeed(pulse: Pulse): PulseSpeed {
+export function getPulseSpeed(pulse: Pulse): WaveSpeed {
   return pulse.speed;
+}
+
+export function getPulseFunction(pulse: Pulse): WaveFunction {
+  return pulse.func;
 }
 
 export function increasePulse(pulse: Pulse): Pulse {
   return makePulse(
+    getPulseFunction(pulse),
     getPulseSpeed(pulse),
     getPulseDistance(pulse) + getPulseSpeed(pulse)
   );
 }
 
-export function makePulsePartGetter(
-  waveFunction: AbstractWaveFunction
-): (pulse: Pulse) => (part: number) => AbstractWavePart {
-  return (pulse) => (part) => {
+export function getPulsePart(pulse: Pulse): WavePartGetter {
+  const waveFunction = getPulseFunction(pulse);
+
+  return (part) => {
     const start =
       getPulseDistance(pulse) -
       Math.PI / getWaveFunctionFrequency(waveFunction);
@@ -52,14 +57,5 @@ export function makePulsePartGetter(
     }
 
     return getWaveFunctionFunction(waveFunction)(part - start);
-  };
-}
-
-export function makePulseUtils(): AbstractWaveUtils<Pulse> {
-  return {
-    makePartGetter: makePulsePartGetter,
-    increase: increasePulse,
-    getDistance: () => Infinity,
-    make: makePulse,
   };
 }
