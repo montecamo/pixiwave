@@ -1,10 +1,8 @@
 import type { Shape, ShapeType, ShapeSize, Point } from "./shapes";
-import { makeBasicShape, getShapeCenter } from "./shapes";
+import { makeBasicShape, getShapeCenter, getShapePointDepth } from "./shapes";
 
 import type { Wave, WaveType, WaveFunction } from "./wave";
 import { increaseWave, getWavePart, makeBasicWave } from "./wave";
-
-import { makeWaveDepthCalculator } from "./waveDepth";
 
 export type WaveShape = {
   shape: Shape;
@@ -37,7 +35,7 @@ export function getWaveShapeDepth(
     const wave = getWaveShapeWave(waveShape);
     const shape = getWaveShapeShape(waveShape);
 
-    const part = makeWaveDepthCalculator(shape)(point);
+    const part = getShapePointDepth(shape)(point);
 
     return getWavePart(wave)(part);
   };

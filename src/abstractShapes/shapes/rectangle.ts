@@ -93,3 +93,16 @@ export function getRectanglePoints(rect: Rectangle): Array<Point> {
 
   return points;
 }
+
+export function getRectanglePointDepth(
+  rect: Rectangle
+): (point: Point) => number {
+  return (point) => {
+    const center = getRectangleCenter(rect);
+
+    return Math.max(
+      Math.abs(getPointX(center) - getPointX(point)),
+      Math.abs(getPointY(center) - getPointY(point))
+    );
+  };
+}

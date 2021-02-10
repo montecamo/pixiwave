@@ -68,3 +68,6 @@ export function getShapePoints(shape: Shape): Array<Point> {
 export function getShapeExtremePoints(shape: Shape): Array<Point> {
   return operate<Array<Point>>(shape, "getExtremePoints");
 }
+export function getShapePointDepth(shape: Shape): (point: Point) => number {
+  return operate<(point: Point) => number>(shape, "getPointDepth");
+}

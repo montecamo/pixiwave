@@ -25,6 +25,12 @@ export function initTagsTable(): TagsTable {
   );
   putTagsTable(table, "circle", "containsPoint", circleUtils.isPointInCircle);
   putTagsTable(table, "circle", "getPoints", circleUtils.getCirclePoints);
+  putTagsTable(
+    table,
+    "circle",
+    "getPointDepth",
+    circleUtils.getCirclePointDepth
+  );
 
   // RECTANGLE
   putTagsTable(
@@ -63,6 +69,12 @@ export function initTagsTable(): TagsTable {
     "rectangle",
     "getPoints",
     rectangleUtils.getRectanglePoints
+  );
+  putTagsTable(
+    table,
+    "rectangle",
+    "getPointDepth",
+    rectangleUtils.getRectanglePointDepth
   );
 
   return table;

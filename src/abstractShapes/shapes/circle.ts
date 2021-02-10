@@ -1,7 +1,7 @@
 import { square } from "../../utils";
 import type { Point } from "./point";
 
-import { getPointX, getPointY } from "./point";
+import { getPointX, getPointY, distanceBetweenPoints } from "./point";
 
 export type Circle = {
   center: Point;
@@ -50,5 +50,13 @@ export function isPointInCircle(circle: Circle): (point: Point) => boolean {
     const radius = getCircleRadius(circle);
 
     return square(pointX - centerX) + square(pointY - centerY) < square(radius);
+  };
+}
+
+export function getCirclePointDepth(circle: Circle): (point: Point) => number {
+  return (point) => {
+    const center = getCircleCenter(circle);
+
+    return distanceBetweenPoints(center, point);
   };
 }
