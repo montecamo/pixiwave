@@ -12,6 +12,7 @@ export function initTagsTable(): TagsTable {
   putTagsTable(table, "pulse", "getDistance", pulseUtils.getPulseDistance);
   putTagsTable(table, "pulse", "makeBasic", pulseUtils.makeBasicPulse);
   putTagsTable(table, "pulse", "makePartGetter", pulseUtils.getPulsePart);
+  putTagsTable(table, "pulse", "updateFunction", pulseUtils.updatePulseFuncion);
 
   // INFINITE WAVE
   putTagsTable(
@@ -32,6 +33,12 @@ export function initTagsTable(): TagsTable {
     "infinite",
     "makePartGetter",
     infiniteWaveUtils.getInfiniteWavePart
+  );
+  putTagsTable(
+    table,
+    "infinite",
+    "updateFunction",
+    infiniteWaveUtils.updateInfiniteWaveFuncion
   );
 
   return table;

@@ -7,6 +7,7 @@ import {
   getPointX,
   getPointY,
   interfereWaves,
+  updateWaveShapeFunction,
 } from "../abstractShapes";
 
 type RenderWaves = Array<WaveShape>;
@@ -19,7 +20,7 @@ type RenderState = {
 type RenderCallback = (point: Point) => void;
 type Renderer = {
   addWave(wave: WaveShape): void;
-  // updateWaveFunction(f: WaveFunction): void;
+  updateWaveFunction(f: WaveFunction): void;
   render(callback: RenderCallback): void;
   tick(): void;
 };
@@ -100,11 +101,11 @@ export function makeRenderer(shape: Shape): Renderer {
     state = addWaveToRenderState(state, wave);
   }
 
-  // function updateWaveFunction(f) {
-  // state = mapRenderStateWaves(state, (wave) =>
-  // updateWaveShapeFunction(wave, f)
-  // );
-  // }
+  function updateWaveFunction(f) {
+    state = mapRenderStateWaves(state, (wave) =>
+      updateWaveShapeFunction(wave, f)
+    );
+  }
 
   function tick() {
     state = getNextRenderState(state);
@@ -116,7 +117,7 @@ export function makeRenderer(shape: Shape): Renderer {
 
   return {
     render,
-    // updateWaveFunction,
+    updateWaveFunction,
     addWave,
     tick,
   };

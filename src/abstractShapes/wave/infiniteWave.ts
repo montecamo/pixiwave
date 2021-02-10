@@ -34,12 +34,24 @@ function getInfiniteWaveDistance(wave: InfiniteWave): WaveDistance {
   return wave.distance;
 }
 
-export function getInfiniteWaveSpeed(wave: InfiniteWave): WaveSpeed {
+function getInfiniteWaveSpeed(wave: InfiniteWave): WaveSpeed {
   return wave.speed;
 }
 
-export function getInfiniteWaveFunction(wave: InfiniteWave): WaveFunction {
+function getInfiniteWaveFunction(wave: InfiniteWave): WaveFunction {
   return wave.func;
+}
+
+export function updateInfiniteWaveFuncion(
+  pulse: InfiniteWave
+): (func: WaveFunction) => InfiniteWave {
+  return (func) =>
+    makeInfiniteWave(
+      func,
+      getInfiniteWaveStart(pulse),
+      getInfiniteWaveSpeed(pulse),
+      getInfiniteWaveDistance(pulse)
+    );
 }
 
 export function increaseInfiniteWave(wave: InfiniteWave): InfiniteWave {

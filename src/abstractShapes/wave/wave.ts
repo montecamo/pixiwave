@@ -47,7 +47,7 @@ export function getWavePart(wave: Wave): WavePartGetter {
 }
 
 export function getWaveDistance(wave: Wave): WaveDistance {
-  return operate(wave, "getDistance");
+  return operate<WaveDistance>(wave, "getDistance");
 }
 
 export function makeBasicWave(
@@ -61,4 +61,11 @@ export function makeBasicWave(
   }
 
   return attachTag(type, func(waveFunction));
+}
+
+export function updateWaveFunction(wave: Wave, func: WaveFunction): Wave {
+  return makeWaveSuccessor(
+    wave,
+    operate<(func: WaveFunction) => RawWave>(wave, "updateFunction")(func)
+  );
 }
