@@ -1,23 +1,16 @@
-import type {
-  WaveShape,
-  WaveFunction,
-  AbstractShape,
-  Point,
-  Shape,
-} from "../abstractShapes";
+import type { WaveShape, WaveFunction, Shape, Point } from "../abstractShapes";
 import {
   getWaveShapeDepth,
-  updateWaveShapeFunction,
   increaseWaveShape,
-  getBaseShapePoints,
+  getShapePoints,
   makePoint,
   getPointX,
   getPointY,
   interfereWaves,
 } from "../abstractShapes";
 
-type RenderWaves = Array<WaveShape<Shape>>;
-type RenderShape = AbstractShape<Shape>;
+type RenderWaves = Array<WaveShape>;
+type RenderShape = Shape;
 
 type RenderState = {
   waves: RenderWaves;
@@ -25,8 +18,8 @@ type RenderState = {
 };
 type RenderCallback = (point: Point) => void;
 type Renderer = {
-  addWave(wave: WaveShape<Shape>): void;
-  updateWaveFunction(f: WaveFunction): void;
+  addWave(wave: WaveShape): void;
+  // updateWaveFunction(f: WaveFunction): void;
   render(callback: RenderCallback): void;
   tick(): void;
 };
@@ -38,7 +31,7 @@ export function makeRenderState(
   return { waves, shape };
 }
 
-function makeInitialRenderState(shape: AbstractShape<Shape>): RenderState {
+function makeInitialRenderState(shape: Shape): RenderState {
   return makeRenderState([], shape);
 }
 
@@ -51,7 +44,7 @@ export function getRenderStateShape(state: RenderState): RenderShape {
 
 export function addWaveToRenderState(
   state: RenderState,
-  wave: WaveShape<Shape>
+  wave: WaveShape
 ): RenderState {
   const waves = getRenderStateWaves(state);
 
@@ -59,13 +52,13 @@ export function addWaveToRenderState(
 }
 export function updateRenderStateShape(
   state: RenderState,
-  shape: AbstractShape<Shape>
+  shape: Shape
 ): RenderState {
   return makeRenderState(getRenderStateWaves(state), shape);
 }
 export function mapRenderStateWaves(
   state: RenderState,
-  cb: (wave: WaveShape<Shape>) => WaveShape<Shape>
+  cb: (wave: WaveShape) => WaveShape
 ): RenderState {
   return makeRenderState(state.waves.map(cb), getRenderStateShape(state));
 }
@@ -76,7 +69,7 @@ export function renderRenderState(
 ): void {
   const shape = getRenderStateShape(state);
   const waves = getRenderStateWaves(state);
-  const shapePoints = getBaseShapePoints(shape);
+  const shapePoints = getShapePoints(shape);
 
   shapePoints.forEach((point) => {
     callback(
@@ -100,18 +93,18 @@ export function getNextRenderState(state: RenderState): RenderState {
 
 // --------------------------------------------------------------------------------------------------
 
-export function makeRenderer(shape: AbstractShape<Shape>): Renderer {
+export function makeRenderer(shape: Shape): Renderer {
   let state = makeInitialRenderState(shape);
 
   function addWave(wave) {
     state = addWaveToRenderState(state, wave);
   }
 
-  function updateWaveFunction(f) {
-    state = mapRenderStateWaves(state, (wave) =>
-      updateWaveShapeFunction(wave, f)
-    );
-  }
+  // function updateWaveFunction(f) {
+  // state = mapRenderStateWaves(state, (wave) =>
+  // updateWaveShapeFunction(wave, f)
+  // );
+  // }
 
   function tick() {
     state = getNextRenderState(state);
@@ -123,7 +116,7 @@ export function makeRenderer(shape: AbstractShape<Shape>): Renderer {
 
   return {
     render,
-    updateWaveFunction,
+    // updateWaveFunction,
     addWave,
     tick,
   };
