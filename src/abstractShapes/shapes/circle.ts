@@ -1,7 +1,12 @@
 import { square } from "../../utils";
 import type { Point } from "./point";
 
-import { getPointX, getPointY, distanceBetweenPoints } from "./point";
+import {
+  makePoint,
+  getPointX,
+  getPointY,
+  distanceBetweenPoints,
+} from "./point";
 
 export type Circle = {
   center: Point;
@@ -36,10 +41,6 @@ export function getCircleExtremePoints(circle: Circle): Array<Point> {
   throw new Error("circle is round, lol");
 }
 
-export function getCirclePoints(circle: Circle): Array<Point> {
-  return [];
-}
-
 export function isPointInCircle(circle: Circle): (point: Point) => boolean {
   return (point) => {
     const center = getCircleCenter(circle);
@@ -51,6 +52,32 @@ export function isPointInCircle(circle: Circle): (point: Point) => boolean {
 
     return square(pointX - centerX) + square(pointY - centerY) < square(radius);
   };
+}
+
+export function getCirclePoints(circle: Circle): Array<Point> {
+  const center = getCircleCenter(circle);
+  const radius = getCircleRadius(circle);
+
+  const topLeft = makePoint(
+    getPointX(center) - radius,
+    getPointY(center) - radius
+  );
+  const bottomRight = makePoint(
+    getPointX(center) + radius,
+    getPointY(center) + radius
+  );
+
+  let points = [];
+
+  for (let y = getPointY(topLeft); y <= getPointY(bottomRight); y++) {
+    for (let x = getPointX(topLeft); x <= getPointX(bottomRight); x++) {
+      if (isPointInCircle(circle)(makePoint(x, y))) {
+        points.push(makePoint(x, y));
+      }
+    }
+  }
+
+  return points;
 }
 
 export function getCirclePointDepth(circle: Circle): (point: Point) => number {
