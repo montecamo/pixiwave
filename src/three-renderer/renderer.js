@@ -1,25 +1,22 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
+import {
+  BACKGROUND_COLOR,
+  AMBIENT_LIGHT_COLOR,
+  SPOT_LIGHT_COLOR,
+  BOX_COLOR,
+} from "./constants";
+
 export class ThreeRenderer {
   init() {
-    this.backgroundColor = 0xed1a21;
-    this.ambientLightColor = 0xffffff;
-    this.spotLightColor = 0xffffff;
-    this.boxColor = 0x1a63ed;
-    this.angle = 0;
     this.gridSize = 100;
     this.col = this.gridSize;
     this.row = this.gridSize;
-    this.velocity = 0.1;
     this.boxes = [];
 
-    this.amplitude = -1;
-    this.frequency = 0;
-    this.waveLength = 242;
-
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(this.backgroundColor);
+    this.scene.background = new THREE.Color(BACKGROUND_COLOR);
 
     this.camera = new THREE.PerspectiveCamera(
       20,
@@ -70,12 +67,12 @@ export class ThreeRenderer {
   }
 
   addAmbientLight() {
-    const light = new THREE.AmbientLight(this.ambientLightColor, 0.5);
+    const light = new THREE.AmbientLight(AMBIENT_LIGHT_COLOR, 0.5);
     this.scene.add(light);
   }
 
   addSpotLight() {
-    this.spotLight = new THREE.SpotLight(this.spotLightColor);
+    this.spotLight = new THREE.SpotLight(SPOT_LIGHT_COLOR);
     this.spotLight.position.set(100, 250, 150);
     this.spotLight.castShadow = true;
     this.scene.add(this.spotLight);
@@ -98,7 +95,7 @@ export class ThreeRenderer {
     const size = 1;
     const height = 5;
     const material = new THREE.MeshLambertMaterial({
-      color: this.boxColor,
+      color: BOX_COLOR,
     });
 
     const geometry = new THREE.BoxBufferGeometry(size, height, size);
