@@ -13,14 +13,14 @@ import Stats from "stats.js";
 
 import { makeRenderer } from "./renderer";
 
-const SIZE = 20;
+const SIZE = 40;
 
-const centerPoint = makePoint(0, 0);
+const centerPoint = makePoint(SIZE / 2, SIZE / 2);
 const waveFunction = makeWaveFunction(0.1, 20);
 
 const shape = makeBasicShape(centerPoint, "rectangle", SIZE);
 const wave = makeBasicWaveShape(
-  makePoint(0, 0),
+  centerPoint,
   { type: "circle" },
   { type: "infinite", func: waveFunction }
 );
