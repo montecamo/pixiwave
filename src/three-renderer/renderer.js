@@ -13,8 +13,8 @@ export class ThreeRenderer {
     this.el = el;
   }
 
-  init() {
-    this.size = 100;
+  init(size) {
+    this.size = size;
     this.boxes = [];
 
     this.addScene();

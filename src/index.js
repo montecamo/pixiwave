@@ -13,10 +13,12 @@ import Stats from "stats.js";
 
 import { makeRenderer } from "./renderer";
 
-const centerPoint = makePoint(0, 0);
-const waveFunction = makeWaveFunction(0.05, 100);
+const SIZE = 20;
 
-const shape = makeBasicShape(centerPoint, "rectangle", 100);
+const centerPoint = makePoint(0, 0);
+const waveFunction = makeWaveFunction(0.1, 20);
+
+const shape = makeBasicShape(centerPoint, "rectangle", SIZE);
 const wave = makeBasicWaveShape(
   makePoint(0, 0),
   { type: "circle" },
@@ -45,7 +47,7 @@ coreRenderer.addWave(wave);
 //coreRenderer.addWave(wave4);
 
 const threeRenderer = new ThreeRenderer(document.body);
-threeRenderer.init();
+threeRenderer.init(SIZE);
 threeRenderer.addBoxes(coreRenderer.getPoints());
 
 const stats = installStats(document.getElementById("stats"));
