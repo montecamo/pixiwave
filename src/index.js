@@ -44,7 +44,7 @@ coreRenderer.addWave(wave);
 //coreRenderer.addWave(wave3);
 //coreRenderer.addWave(wave4);
 
-const threeRenderer = new ThreeRenderer();
+const threeRenderer = new ThreeRenderer(document.body);
 threeRenderer.init();
 threeRenderer.addBoxes(coreRenderer.getPoints());
 
@@ -54,7 +54,7 @@ function loop() {
   stats.begin();
 
   coreRenderer.tick();
-  threeRenderer.updateCells(coreRenderer.getPoints());
+  threeRenderer.updateBoxes(coreRenderer.getPoints());
   threeRenderer.render();
 
   stats.end();

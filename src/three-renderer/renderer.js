@@ -9,37 +9,23 @@ import {
 } from "./constants";
 
 export class ThreeRenderer {
+  constructor(el) {
+    this.el = el;
+  }
+
   init() {
-    this.gridSize = 100;
-    this.col = this.gridSize;
-    this.row = this.gridSize;
+    this.size = 100;
     this.boxes = [];
 
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(BACKGROUND_COLOR);
-
-    this.camera = new THREE.PerspectiveCamera(
-      20,
-      window.innerWidth / window.innerHeight,
-      1,
-      1000
-    );
-    this.camera.position.set(-100, 100, -100);
-
+    this.addScene();
+    this.addCamera();
     this.addRenderer();
-
-    document.body.appendChild(this.renderer.domElement);
-
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.04;
-
     this.addAmbientLight();
-
+    this.addControls();
     this.addDirectionalLight();
-
     this.addFloor();
 
+    this.mount();
     window.addEventListener("resize", this.onResize.bind(this));
   }
 
@@ -66,23 +52,57 @@ export class ThreeRenderer {
     this.scene.add(this.directionalLight.target);
   }
 
+  addScene() {
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(BACKGROUND_COLOR);
+  }
+
+  addCamera() {
+    this.camera = new THREE.PerspectiveCamera(
+      20,
+      this.getWidth() / this.getHeight(),
+      1,
+      1000
+    );
+    this.camera.position.set(-100, 100, -100);
+  }
+
+  addControls() {
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.04;
+  }
+
   addAmbientLight() {
     const light = new THREE.AmbientLight(AMBIENT_LIGHT_COLOR, 0.5);
     this.scene.add(light);
   }
 
   addSpotLight() {
-    this.spotLight = new THREE.SpotLight(SPOT_LIGHT_COLOR);
-    this.spotLight.position.set(100, 250, 150);
-    this.spotLight.castShadow = true;
-    this.scene.add(this.spotLight);
+    const spotLight = new THREE.SpotLight(SPOT_LIGHT_COLOR);
+    spotLight.position.set(100, 250, 150);
+    spotLight.castShadow = true;
+
+    this.scene.add(spotLight);
   }
 
   addRenderer() {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(this.getWidth(), this.getHeight());
+  }
+
+  getHeight() {
+    return this.el.clientHeight;
+  }
+
+  getWidth() {
+    return this.el.clientWidth;
+  }
+
+  mount() {
+    this.el.appendChild(this.renderer.domElement);
   }
 
   clearScene() {
@@ -100,7 +120,7 @@ export class ThreeRenderer {
 
     const geometry = new THREE.BoxBufferGeometry(size, height, size);
     geometry.translate(0, 2.5, 0);
-    this.mesh = this.getBox(geometry, material, this.row * this.col);
+    this.mesh = this.getBox(geometry, material, this.size * this.size);
     this.scene.add(this.mesh);
 
     points.forEach(({ x, y }, i) => {
@@ -113,9 +133,9 @@ export class ThreeRenderer {
 
       pivot.scale.set(1, 0.001, 1);
       pivot.position.set(
-        x - this.gridSize * 0.5,
+        x - this.size * 0.5,
         height * 0.5,
-        y - this.gridSize * 0.5
+        y - this.size * 0.5
       );
 
       pivot.updateMatrix();
@@ -125,7 +145,7 @@ export class ThreeRenderer {
     this.mesh.instanceMatrix.needsUpdate = true;
   }
 
-  updateCells(points) {
+  updateBoxes(points) {
     points.forEach(({ x, y, z }, i) => {
       this.boxes[x][y].scale.y = Math.abs(z * 0.1);
 
@@ -140,14 +160,14 @@ export class ThreeRenderer {
     const planeGeometry = new THREE.PlaneBufferGeometry(500, 500);
     const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.35 });
 
-    this.floor = new THREE.Mesh(planeGeometry, planeMaterial);
+    const floor = new THREE.Mesh(planeGeometry, planeMaterial);
 
     planeGeometry.rotateX(-Math.PI / 2);
 
-    this.floor.position.y = 2;
-    this.floor.receiveShadow = true;
+    floor.position.y = 2;
+    floor.receiveShadow = true;
 
-    this.scene.add(this.floor);
+    this.scene.add(floor);
   }
 
   getBox(geometry, material, count) {
@@ -160,8 +180,7 @@ export class ThreeRenderer {
   }
 
   addGrid() {
-    const size = this.col;
-    const divisions = size;
+    const divisions = this.size;
     const gridHelper = new THREE.GridHelper(size, divisions);
 
     gridHelper.position.set(0, 0, 0);
@@ -178,11 +197,11 @@ export class ThreeRenderer {
   }
 
   onResize() {
-    const ww = window.innerWidth;
-    const wh = window.innerHeight;
+    const width = this.getWidth();
+    const height = this.getHeight();
 
-    this.camera.aspect = ww / wh;
+    this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(ww, wh);
+    this.renderer.setSize(width, height);
   }
 }
