@@ -1,9 +1,9 @@
 ### TODO
 
 - [x] Make waves limited by length
-- [ ] Refactor abstract shape utils get
-- [ ] Optimise render
+- [X] Refactor abstract shape utils get
+- [X] Optimise render
 - [ ] Add controls
-- [ ] Add fancy design
-- [ ] Fix ts-ignore hacks
+- [X] Add fancy design
+- [X] Fix ts-ignore hacks
 - [ ] Make code more functional
