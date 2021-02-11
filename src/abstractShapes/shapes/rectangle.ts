@@ -83,8 +83,8 @@ export function getRectanglePoints(rect: Rectangle): Array<Point> {
 
   let points = [];
 
-  for (let y = getPointY(topLeft); y <= getPointY(bottomRight); y++) {
-    for (let x = getPointX(topLeft); x <= getPointX(bottomRight); x++) {
+  for (let y = getPointY(topLeft); y < getPointY(bottomRight); y++) {
+    for (let x = getPointX(topLeft); x < getPointX(bottomRight); x++) {
       if (isPointInRectangle(rect)(makePoint(x, y))) {
         points.push(makePoint(x, y));
       }
