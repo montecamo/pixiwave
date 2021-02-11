@@ -22,6 +22,7 @@ type Renderer = {
   addWave(wave: WaveShape): void;
   updateWaveFunction(f: WaveFunction): void;
   render(callback: RenderCallback): void;
+  getPoints(): Array<Point>;
   tick(): void;
 };
 
@@ -115,10 +116,19 @@ export function makeRenderer(shape: Shape): Renderer {
     renderRenderState(state, cb);
   }
 
+  function getPoints() {
+    const points = [];
+
+    renderRenderState(state, (point) => points.push(point));
+
+    return points;
+  }
+
   return {
     render,
     updateWaveFunction,
     addWave,
     tick,
+    getPoints,
   };
 }
