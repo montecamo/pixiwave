@@ -1,4 +1,4 @@
-import { ThreeRenderer } from "./three-renderer";
+import { ThreeRenderer, installStats } from "./three-renderer";
 
 import {
   makePoint,
@@ -9,6 +9,7 @@ import {
   makeBasicWaveShape,
   makeWaveFunction,
 } from "./abstractShapes";
+import Stats from "stats.js";
 
 import { makeRenderer } from "./renderer";
 
@@ -47,14 +48,18 @@ const threeRenderer = new ThreeRenderer();
 threeRenderer.init();
 threeRenderer.addBoxes(coreRenderer.getPoints());
 
+const stats = installStats(document.getElementById("stats"));
+
 function loop() {
+  stats.begin();
+
   coreRenderer.tick();
   threeRenderer.updateCells(coreRenderer.getPoints());
   threeRenderer.render();
 
-  setTimeout(() => {
-    requestAnimationFrame(loop);
-  }, 30);
+  stats.end();
+
+  requestAnimationFrame(loop);
 }
 
 loop();

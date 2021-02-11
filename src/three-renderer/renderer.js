@@ -1,13 +1,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Stats from "stats.js";
 
 export class ThreeRenderer {
   init() {
-    this.stats = new Stats();
-    this.stats.showPanel(0);
-    // document.body.querySelector(".stats").appendChild(this.stats.domElement);
-
     this.backgroundColor = 0xed1a21;
     this.ambientLightColor = 0xffffff;
     this.spotLightColor = 0xffffff;
@@ -180,13 +175,9 @@ export class ThreeRenderer {
   }
 
   render() {
-    this.stats.begin();
-
     this.controls.update();
 
     this.renderer.render(this.scene, this.camera);
-
-    this.stats.end();
   }
 
   onResize() {
