@@ -132,11 +132,7 @@ export class ThreeRenderer {
       this.boxes[x][y] = pivot;
 
       pivot.scale.set(1, 0.001, 1);
-      pivot.position.set(
-        x - this.size * 0.5,
-        height * 0.5,
-        y - this.size * 0.5
-      );
+      pivot.position.set(x * 0.5, height * 0.5, y * 0.5);
 
       pivot.updateMatrix();
       this.mesh.setMatrixAt(i, pivot.matrix);
