@@ -13,8 +13,8 @@ export class ThreeRenderer {
     this.el = el;
   }
 
-  init(size) {
-    this.size = size;
+  init() {
+    this.size = 0;
     this.boxes = [];
 
     this.addScene();
@@ -142,6 +142,14 @@ export class ThreeRenderer {
   }
 
   updateBoxes(points) {
+    const size = Math.sqrt(points.length);
+
+    if (this.size !== size) {
+      this.size = size;
+      this.clearScene();
+      this.addBoxes(points);
+    }
+
     points.forEach(({ x, y, z }, i) => {
       this.boxes[x][y].scale.y = Math.abs(z * 0.1);
 

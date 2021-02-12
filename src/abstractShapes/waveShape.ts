@@ -13,7 +13,7 @@ export type WaveShape = {
   shape: Shape;
   wave: Wave;
 };
-type ShapeOptions = {
+export type ShapeOptions = {
   size: ShapeSize;
   type: ShapeType;
 };
