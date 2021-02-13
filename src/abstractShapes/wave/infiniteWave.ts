@@ -1,7 +1,7 @@
 import type { WavePart, WaveSpeed, WaveDistance, WavePartGetter } from "./wave";
 import type { WaveFunction } from "./function";
 
-import { getWaveFunctionFunction } from "./function";
+import { getWaveFunctionFunction, getWaveFunctionFrequency } from "./function";
 
 const WAVE_NEUTRAL = 0;
 
@@ -69,9 +69,12 @@ export function updateInfiniteWaveSpeed(
 }
 
 export function increaseInfiniteWave(wave: InfiniteWave): InfiniteWave {
-  const speed = getInfiniteWaveSpeed(wave);
+  const func = getInfiniteWaveFunction(wave);
+  const frequency = getWaveFunctionFrequency(func);
+  const speed = getInfiniteWaveSpeed(wave) / frequency;
+
   return makeInfiniteWave(
-    getInfiniteWaveFunction(wave),
+    func,
     getInfiniteWaveStart(wave) + speed,
     getInfiniteWaveDistance(wave) + speed,
     speed

@@ -20,7 +20,7 @@ function makePulse(
 
 export function makeBasicPulse(
   func: WaveFunction,
-  speed: WaveSpeed = 0.1
+  speed: WaveSpeed = 1
 ): Pulse {
   return makePulse(func, speed, 0);
 }
@@ -50,11 +50,11 @@ export function updatePulseSpeed(pulse: Pulse): (speed: WaveSpeed) => Pulse {
 }
 
 export function increasePulse(pulse: Pulse): Pulse {
-  return makePulse(
-    getPulseFunction(pulse),
-    getPulseSpeed(pulse),
-    getPulseDistance(pulse) + getPulseSpeed(pulse)
-  );
+  const func = getPulseFunction(pulse);
+  const frequency = getWaveFunctionFrequency(func);
+  const speed = getPulseSpeed(pulse);
+
+  return makePulse(func, speed, getPulseDistance(pulse) + speed / frequency);
 }
 
 export function getPulsePart(pulse: Pulse): WavePartGetter {

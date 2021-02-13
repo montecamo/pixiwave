@@ -11,7 +11,7 @@ export function installControls(data): ControlData {
   gui.add(data, "amplitude", 0, 40);
   gui.add(data, "frequency", 0, 0.5);
   gui.add(data, "size", 10, 100, 1);
-  gui.add(data, "speed", 0, 1);
+  gui.add(data, "speed", 0, 0.2, 0.001);
 
   return data;
 }
