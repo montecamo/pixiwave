@@ -49,8 +49,8 @@ export function updateInfiniteWaveFuncion(
     makeInfiniteWave(
       func,
       getInfiniteWaveStart(pulse),
-      getInfiniteWaveSpeed(pulse),
-      getInfiniteWaveDistance(pulse)
+      getInfiniteWaveDistance(pulse),
+      getInfiniteWaveSpeed(pulse)
     );
 }
 
