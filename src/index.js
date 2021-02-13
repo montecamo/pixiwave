@@ -13,7 +13,8 @@ import { makeRenderer } from "./renderer";
 const options = {
   amplitude: 10,
   frequency: 0.1,
-  size: 30,
+  size: 3,
+  speed: 0.01,
 };
 
 const centerPoint = makePoint(0, 0);
@@ -22,12 +23,12 @@ const waveFunction = makeWaveFunction(options.frequency, options.amplitude);
 const shape = makeBasicShape(
   centerPoint,
   "rectangle",
-  Math.round(options.size)
+  Math.round(options.size - 1)
 );
 const wave = makeBasicWaveShape(
   centerPoint,
   { type: "circle" },
-  { type: "infinite", func: waveFunction }
+  { type: "infinite", speed: options.speed, func: waveFunction }
 );
 
 const coreRenderer = makeRenderer(shape);
@@ -39,24 +40,21 @@ threeRenderer.init();
 const stats = installStats(document.getElementById("stats"));
 installControls(options);
 
-let last = 0;
-function loop(date) {
+function loop() {
   stats.begin();
 
   coreRenderer.updateShape(
-    makeBasicShape(centerPoint, "rectangle", Math.round(options.size))
+    makeBasicShape(centerPoint, "rectangle", Math.round(options.size - 1))
   );
 
   coreRenderer.updateWaveFunction(
     makeWaveFunction(options.frequency, options.amplitude)
   );
 
-  if (date - last > 30) {
-    coreRenderer.tick();
-    threeRenderer.updateBoxes(coreRenderer.render());
+  coreRenderer.updateWaveSpeed(options.speed);
 
-    last = date;
-  }
+  coreRenderer.tick();
+  threeRenderer.updateBoxes(coreRenderer.render());
 
   threeRenderer.render();
 
