@@ -2,7 +2,6 @@ import type { WavePart, WaveSpeed, WaveDistance, WavePartGetter } from "./wave";
 import type { WaveFunction } from "./function";
 import { getWaveFunctionFunction, getWaveFunctionFrequency } from "./function";
 
-const PULSE_SPEED = 1;
 const PULSE_NEUTRAL = 0;
 
 export type Pulse = {
@@ -19,8 +18,11 @@ function makePulse(
   return { func, speed, distance };
 }
 
-export function makeBasicPulse(func: WaveFunction): Pulse {
-  return makePulse(func, PULSE_SPEED, 0);
+export function makeBasicPulse(
+  func: WaveFunction,
+  speed: WaveSpeed = 0.1
+): Pulse {
+  return makePulse(func, speed, 0);
 }
 
 export function getPulseDistance(pulse: Pulse): WavePart {
@@ -40,6 +42,11 @@ export function updatePulseFuncion(
 ): (func: WaveFunction) => Pulse {
   return (func) =>
     makePulse(func, getPulseSpeed(pulse), getPulseDistance(pulse));
+}
+
+export function updatePulseSpeed(pulse: Pulse): (speed: WaveSpeed) => Pulse {
+  return (speed) =>
+    makePulse(getPulseFunction(pulse), speed, getPulseDistance(pulse));
 }
 
 export function increasePulse(pulse: Pulse): Pulse {

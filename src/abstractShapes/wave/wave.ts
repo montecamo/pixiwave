@@ -69,3 +69,10 @@ export function updateWaveFunction(wave: Wave, func: WaveFunction): Wave {
     operate<(func: WaveFunction) => RawWave>(wave, "updateFunction")(func)
   );
 }
+
+export function updateWaveSpeed(wave: Wave, speed: WaveSpeed): Wave {
+  return makeWaveSuccessor(
+    wave,
+    operate<(speed: WaveSpeed) => RawWave>(wave, "updateSpeed")(speed)
+  );
+}
