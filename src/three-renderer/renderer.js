@@ -107,6 +107,7 @@ export class ThreeRenderer {
 
   clearScene() {
     this.scene.remove(this.mesh);
+    this.scene.remove(this.gridHelper);
 
     this.boxes = [];
   }
@@ -132,7 +133,7 @@ export class ThreeRenderer {
       this.boxes[x][y] = pivot;
 
       pivot.scale.set(1, 0.001, 1);
-      pivot.position.set(x * 0.5, height * 0.5, y * 0.5);
+      pivot.position.set(x, height, y);
 
       pivot.updateMatrix();
       this.mesh.setMatrixAt(i, pivot.matrix);
@@ -147,6 +148,7 @@ export class ThreeRenderer {
     if (this.size !== size) {
       this.size = size;
       this.clearScene();
+      this.addGrid();
       this.addBoxes(points);
     }
 
@@ -185,13 +187,13 @@ export class ThreeRenderer {
 
   addGrid() {
     const divisions = this.size;
-    const gridHelper = new THREE.GridHelper(size, divisions);
+    this.gridHelper = new THREE.GridHelper(this.size, divisions);
 
-    gridHelper.position.set(0, 0, 0);
-    gridHelper.material.opacity = 0;
-    gridHelper.material.transparent = true;
+    this.gridHelper.position.set(0, 0, 0);
+    this.gridHelper.material.opacity = 0;
+    this.gridHelper.material.transparent = true;
 
-    this.scene.add(gridHelper);
+    this.scene.add(this.gridHelper);
   }
 
   render() {

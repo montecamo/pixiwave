@@ -13,8 +13,8 @@ export type Circle = {
   radius: number;
 };
 
-function makeCircle(center: Point, radius: number): Circle {
-  return { center, radius };
+function makeCircle(center: Point, size: number): Circle {
+  return { center, radius: size / 2 };
 }
 
 export function makeBasicCircle(center: Point, size: number = 0.5): Circle {
