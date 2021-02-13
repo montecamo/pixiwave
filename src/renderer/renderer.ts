@@ -1,4 +1,10 @@
-import type { WaveShape, WaveFunction, Shape, Point } from "../abstractShapes";
+import type {
+  WaveShape,
+  WaveFunction,
+  WaveSpeed,
+  Shape,
+  Point,
+} from "../abstractShapes";
 import {
   getWaveShapeDepth,
   increaseWaveShape,
@@ -8,6 +14,7 @@ import {
   getPointY,
   interfereWaves,
   updateWaveShapeFunction,
+  updateWaveShapeSpeed,
 } from "../abstractShapes";
 
 type RenderWaves = Array<WaveShape>;
@@ -20,6 +27,7 @@ type RenderState = {
 type Renderer = {
   addWave(wave: WaveShape): void;
   updateWaveFunction(f: WaveFunction): void;
+  updateWaveSpeed(speed: WaveSpeed): void;
   updateShape(shape: Shape): void;
   render(): Array<Point>;
   tick(): void;
@@ -63,6 +71,15 @@ export function makeRenderer(shape: Shape): Renderer {
     );
   }
 
+  function updateWaveSpeed(speed) {
+    state = makeRenderState(
+      getRenderStateWaves(state).map((wave) =>
+        updateWaveShapeSpeed(wave, speed)
+      ),
+      getRenderStateShape(state)
+    );
+  }
+
   function updateShape(shape) {
     state = makeRenderState(getRenderStateWaves(state), shape);
   }
@@ -93,6 +110,7 @@ export function makeRenderer(shape: Shape): Renderer {
   return {
     render,
     updateWaveFunction,
+    updateWaveSpeed,
     addWave,
     tick,
     updateShape,
