@@ -43,13 +43,6 @@ export function getRenderStateShape(state: RenderState): RenderShape {
   return state.shape;
 }
 
-export function mapRenderStateWaves(
-  state: RenderState,
-  cb: (wave: WaveShape) => WaveShape
-): RenderState {
-  return makeRenderState(state.waves.map(cb), getRenderStateShape(state));
-}
-
 // --------------------------------------------------------------------------------------------------
 
 export function makeRenderer(shape: Shape): Renderer {
@@ -62,8 +55,11 @@ export function makeRenderer(shape: Shape): Renderer {
   }
 
   function updateWaveFunction(f) {
-    state = mapRenderStateWaves(state, (wave) =>
-      updateWaveShapeFunction(wave, f)
+    state = makeRenderState(
+      getRenderStateWaves(state).map((wave) =>
+        updateWaveShapeFunction(wave, f)
+      ),
+      getRenderStateShape(state)
     );
   }
 
