@@ -6,7 +6,7 @@
 - [x] Add controls
 - [x] Add fancy design
 - [x] Fix ts-ignore hacks
-- [ ] Add wave spawner
+- [x] Add wave spawner
 - [ ] Optimise abstractions
 - [ ] Add rainbow gradients
 - [ ] Fix shadow
