@@ -49,11 +49,12 @@ window.addEventListener("click", () => {
   const hoveredCoordinates = threeRenderer.getHoveredBoxCoordinates();
 
   if (hoveredCoordinates) {
+    console.warn("coords", hoveredCoordinates, options.size);
     coreRenderer.addWave(
       makeBasicWaveShape(
         makePoint(
-          hoveredCoordinates.x - options.size / 2,
-          hoveredCoordinates.y - options.size / 2
+          hoveredCoordinates.x - options.size / 2 + 0.5,
+          hoveredCoordinates.y - options.size / 2 + 0.5
         ),
         { type: options["wave type"] },
         {

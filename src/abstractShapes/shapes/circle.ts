@@ -50,8 +50,10 @@ export function isPointInCircle(circle: Circle): (point: Point) => boolean {
     const center = getCircleCenter(circle);
     const centerX = getPointX(center);
     const centerY = getPointY(center);
+
     const pointX = getPointX(point);
     const pointY = getPointY(point);
+
     const radius = getCircleRadius(circle);
 
     return square(pointX - centerX) + square(pointY - centerY) < square(radius);
