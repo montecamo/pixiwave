@@ -31,6 +31,7 @@ export function initTagsTable(): TagsTable {
     "getPointDepth",
     circleUtils.getCirclePointDepth
   );
+  putTagsTable(table, "circle", "getSize", circleUtils.getCircleSize);
 
   // RECTANGLE
   putTagsTable(
@@ -76,6 +77,7 @@ export function initTagsTable(): TagsTable {
     "getPointDepth",
     rectangleUtils.getRectanglePointDepth
   );
+  putTagsTable(table, "rectangle", "getSize", rectangleUtils.getRectangleSize);
 
   return table;
 }

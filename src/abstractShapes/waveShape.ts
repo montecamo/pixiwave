@@ -1,10 +1,17 @@
+import { getTaggedType } from "../utils";
 import type { Shape, ShapeType, ShapeSize, Point } from "./shapes";
-import { makeBasicShape, getShapeCenter, getShapePointDepth } from "./shapes";
+import {
+  makeBasicShape,
+  getShapeCenter,
+  getShapePointDepth,
+  getShapeSize,
+} from "./shapes";
 
 import type { Wave, WaveType, WaveFunction, WaveSpeed } from "./wave";
 import {
   increaseWave,
   getWavePart,
+  getWaveDistance,
   makeBasicWave,
   updateWaveFunction,
   updateWaveSpeed,
@@ -64,6 +71,18 @@ export function makeBasicWaveShape(
   const wave = makeBasicWave(waveOptions.type, waveOptions.func);
 
   return makeWaveShape(shape, wave);
+}
+
+export function getWaveShapeSize(waveShape: WaveShape): number {
+  const wave = getWaveShapeWave(waveShape);
+
+  return getWaveDistance(wave);
+}
+
+export function getWaveShapeType(waveShape: WaveShape): WaveType {
+  const wave = getWaveShapeWave(waveShape);
+
+  return getTaggedType(wave);
 }
 
 export function updateWaveShapeShape(

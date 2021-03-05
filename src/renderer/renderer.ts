@@ -15,6 +15,9 @@ import {
   interfereWaves,
   updateWaveShapeFunction,
   updateWaveShapeSpeed,
+  getWaveShapeSize,
+  getWaveShapeType,
+  getShapeSize,
 } from "../abstractShapes";
 
 type RenderWaves = Array<WaveShape>;
@@ -89,11 +92,20 @@ export function makeRenderer(shape: Shape): Renderer {
     state = makeRenderState(getRenderStateWaves(state), shape);
   }
 
+  function isWaveFinished(wave) {
+    const shape = getRenderStateShape(state);
+
+    return (
+      getWaveShapeType(wave) === "pulse" &&
+      getShapeSize(shape) * 3 < getWaveShapeSize(wave)
+    );
+  }
+
   function tick() {
     const waves = getRenderStateWaves(state);
 
     state = makeRenderState(
-      waves.map(increaseWaveShape),
+      waves.map(increaseWaveShape).filter((w) => !isWaveFinished(w)),
       getRenderStateShape(state)
     );
   }

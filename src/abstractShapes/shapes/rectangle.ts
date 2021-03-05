@@ -39,6 +39,10 @@ function getRectangleHeight(rect: Rectangle): number {
   return rect.height;
 }
 
+export function getRectangleSize(rect: Rectangle): number {
+  return Math.max(rect.height, rect.width);
+}
+
 export function getRectangleCentralRectangle(rect: Rectangle): Rectangle {
   return makeRectangle(getRectangleCenter(rect), 1, 1);
 }

@@ -29,6 +29,10 @@ function getCircleRadius(circle: Circle): number {
   return circle.radius;
 }
 
+export function getCircleSize(circle: Circle): number {
+  return circle.radius * 2;
+}
+
 export function getCircleCentralCircle(circle: Circle): Circle {
   return makeCircle(getCircleCenter(circle), 0.5);
 }

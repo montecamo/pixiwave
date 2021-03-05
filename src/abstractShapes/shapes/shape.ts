@@ -65,6 +65,9 @@ export function isPointInShape(shape: Shape, point: Point): boolean {
 export function getShapePoints(shape: Shape): Array<Point> {
   return operate<Array<Point>>(shape, "getPoints");
 }
+export function getShapeSize(shape: Shape): number {
+  return operate<number>(shape, "getSize");
+}
 export function getShapeExtremePoints(shape: Shape): Array<Point> {
   return operate<Array<Point>>(shape, "getExtremePoints");
 }
