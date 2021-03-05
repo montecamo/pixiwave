@@ -15,6 +15,8 @@ const options = {
   frequency: 0.1,
   size: 30,
   speed: 0.01,
+  infinite: true,
+  waveType: "circle",
 };
 
 const centerPoint = makePoint(0, 0);
@@ -69,8 +71,12 @@ window.addEventListener("click", () => {
           hoveredCoordinates.x - options.size / 2,
           hoveredCoordinates.y - options.size / 2
         ),
-        { type: "circle" },
-        { type: "pulse", speed: options.speed, func: waveFunction }
+        { type: options.waveType },
+        {
+          type: options.infinite ? "infinite" : "pulse",
+          speed: options.speed,
+          func: waveFunction,
+        }
       )
     );
   }
