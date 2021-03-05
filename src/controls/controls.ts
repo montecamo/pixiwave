@@ -6,12 +6,12 @@ export type ControlData = {
   size: number;
 };
 
-export function installControls(data): ControlData {
+export function installControls(data): dat.GUI {
   const gui = new dat.GUI();
   gui.add(data, "amplitude", 0, 40);
-  gui.add(data, "frequency", 0, 1, 0.001);
+  gui.add(data, "frequency", 0.001, 1, 0.001);
   gui.add(data, "size", 1, 100, 1);
   gui.add(data, "speed", 0, 0.2, 0.001);
 
-  return data;
+  return gui;
 }
