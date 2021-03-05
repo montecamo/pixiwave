@@ -121,7 +121,7 @@ export class ThreeRenderer {
   addMouse() {
     this.mouse = new THREE.Vector2(1, 1);
 
-    document.addEventListener("mousemove", this.onMouseMove.bind(this));
+    window.addEventListener("pointermove", this.onMouseMove.bind(this), true);
   }
 
   onMouseMove(event) {
@@ -175,7 +175,7 @@ export class ThreeRenderer {
     }
 
     points.forEach(({ x, y, z }, i) => {
-      this.boxes[x][y].scale.y = Math.abs(z * 0.1) + 0.001;
+      this.boxes[x][y].scale.y = Math.abs(z * 0.1) + 0.1;
 
       this.boxes[x][y].updateMatrix();
       this.mesh.setMatrixAt(i, this.boxes[x][y].matrix);
@@ -218,21 +218,28 @@ export class ThreeRenderer {
     this.scene.add(this.gridHelper);
   }
 
+  clearLastIntersection() {
+    this.mesh.setColorAt(this.lastInstanceId, this.color);
+
+    this.lastInstanceId = undefined;
+
+    this.mesh.instanceColor.needsUpdate = true;
+  }
+
   handleIntersection() {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     const intersection = this.raycaster.intersectObject(this.mesh);
-    this.mesh.setColorAt(this.lastInstanceId, this.color);
-    this.lastInstanceId = undefined;
+
+    this.clearLastIntersection();
 
     if (intersection.length > 0) {
       const instanceId = intersection[0].instanceId;
 
       this.mesh.setColorAt(instanceId, this.activeColor);
       this.lastInstanceId = instanceId;
+      this.mesh.instanceColor.needsUpdate = true;
     }
-
-    this.mesh.instanceColor.needsUpdate = true;
   }
 
   getHoveredBoxCoordinates() {
