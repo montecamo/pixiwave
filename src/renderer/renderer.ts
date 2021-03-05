@@ -26,6 +26,7 @@ type RenderState = {
 };
 type Renderer = {
   addWave(wave: WaveShape): void;
+  clearWaves(): void;
   updateWaveFunction(f: WaveFunction): void;
   updateWaveSpeed(speed: WaveSpeed): void;
   updateShape(shape: Shape): void;
@@ -60,6 +61,10 @@ export function makeRenderer(shape: Shape): Renderer {
     const waves = getRenderStateWaves(state);
 
     state = makeRenderState(waves.concat(wave), getRenderStateShape(state));
+  }
+
+  function clearWaves() {
+    state = makeRenderState([], getRenderStateShape(state));
   }
 
   function updateWaveFunction(f) {
@@ -114,5 +119,6 @@ export function makeRenderer(shape: Shape): Renderer {
     addWave,
     tick,
     updateShape,
+    clearWaves,
   };
 }

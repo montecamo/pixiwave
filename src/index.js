@@ -6,7 +6,7 @@ import {
   makeBasicWaveShape,
   makeWaveFunction,
 } from "./abstractShapes";
-import { installControls, installMap } from "./controls";
+import { installControls } from "./controls";
 
 import { makeRenderer } from "./renderer";
 
@@ -16,7 +16,10 @@ const options = {
   size: 30,
   speed: 0.01,
   infinite: true,
-  waveType: "circle",
+  ["wave type"]: "circle",
+  ["clear waves"]: () => {
+    coreRenderer.clearWaves();
+  },
 };
 
 const centerPoint = makePoint(0, 0);
@@ -50,7 +53,7 @@ const wave4 = makeBasicWaveShape(
 );
 
 const coreRenderer = makeRenderer(shape);
-//coreRenderer.addWave(wave);
+coreRenderer.addWave(wave);
 //coreRenderer.addWave(wave2);
 //coreRenderer.addWave(wave3);
 //coreRenderer.addWave(wave4);
@@ -71,7 +74,7 @@ window.addEventListener("click", () => {
           hoveredCoordinates.x - options.size / 2,
           hoveredCoordinates.y - options.size / 2
         ),
-        { type: options.waveType },
+        { type: options["wave type"] },
         {
           type: options.infinite ? "infinite" : "pulse",
           speed: options.speed,
