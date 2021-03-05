@@ -6,6 +6,7 @@ import {
   AMBIENT_LIGHT_COLOR,
   SPOT_LIGHT_COLOR,
   BOX_COLOR,
+  ACTIVE_BOX_COLOR,
 } from "./constants";
 
 export class ThreeRenderer {
@@ -15,7 +16,10 @@ export class ThreeRenderer {
 
   init() {
     this.size = 0;
+    this.lastInstanceId = undefined;
     this.boxes = [];
+    this.color = new THREE.Color(BOX_COLOR);
+    this.activeColor = new THREE.Color(ACTIVE_BOX_COLOR);
 
     this.addScene();
     this.addCamera();
@@ -24,6 +28,8 @@ export class ThreeRenderer {
     this.addControls();
     this.addDirectionalLight();
     this.addFloor();
+    this.addMouse();
+    this.addRaycaster();
 
     this.mount();
     window.addEventListener("resize", this.onResize.bind(this));
@@ -64,7 +70,7 @@ export class ThreeRenderer {
       1,
       1000
     );
-    this.camera.position.set(-100, 100, -100);
+    this.camera.position.set(-100, 100, 100);
   }
 
   addControls() {
@@ -112,12 +118,27 @@ export class ThreeRenderer {
     this.boxes = [];
   }
 
+  addMouse() {
+    this.mouse = new THREE.Vector2(1, 1);
+
+    document.addEventListener("mousemove", this.onMouseMove.bind(this));
+  }
+
+  onMouseMove(event) {
+    event.preventDefault();
+
+    this.mouse.x = (event.clientX / this.getWidth()) * 2 - 1;
+    this.mouse.y = -(event.clientY / this.getHeight()) * 2 + 1;
+  }
+
+  addRaycaster() {
+    this.raycaster = new THREE.Raycaster();
+  }
+
   addBoxes(points) {
     const size = 1;
     const height = 5;
-    const material = new THREE.MeshLambertMaterial({
-      color: BOX_COLOR,
-    });
+    const material = new THREE.MeshLambertMaterial();
 
     const geometry = new THREE.BoxBufferGeometry(size, height, size);
     geometry.translate(0, 2.5, 0);
@@ -132,11 +153,12 @@ export class ThreeRenderer {
       const pivot = new THREE.Object3D();
       this.boxes[x][y] = pivot;
 
-      pivot.scale.set(1, 0.001, 1);
       pivot.position.set(x, height, y);
+      pivot.scale.set(1, 20, 1);
 
       pivot.updateMatrix();
       this.mesh.setMatrixAt(i, pivot.matrix);
+      this.mesh.setColorAt(i, this.color);
     });
 
     this.mesh.instanceMatrix.needsUpdate = true;
@@ -153,7 +175,7 @@ export class ThreeRenderer {
     }
 
     points.forEach(({ x, y, z }, i) => {
-      this.boxes[x][y].scale.y = Math.abs(z * 0.1);
+      this.boxes[x][y].scale.y = Math.abs(z * 0.1) + 0.001;
 
       this.boxes[x][y].updateMatrix();
       this.mesh.setMatrixAt(i, this.boxes[x][y].matrix);
@@ -170,7 +192,7 @@ export class ThreeRenderer {
 
     planeGeometry.rotateX(-Math.PI / 2);
 
-    floor.position.y = 2;
+    floor.position.y = 5;
     floor.receiveShadow = true;
 
     this.scene.add(floor);
@@ -196,8 +218,38 @@ export class ThreeRenderer {
     this.scene.add(this.gridHelper);
   }
 
+  handleIntersection() {
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+
+    const intersection = this.raycaster.intersectObject(this.mesh);
+    this.mesh.setColorAt(this.lastInstanceId, this.color);
+    this.lastInstanceId = undefined;
+
+    if (intersection.length > 0) {
+      const instanceId = intersection[0].instanceId;
+
+      this.mesh.setColorAt(instanceId, this.activeColor);
+      this.lastInstanceId = instanceId;
+    }
+
+    this.mesh.instanceColor.needsUpdate = true;
+  }
+
+  getHoveredBoxCoordinates() {
+    if (this.lastInstanceId !== undefined) {
+      return {
+        x: this.lastInstanceId % this.size,
+        y: Math.floor(this.lastInstanceId / this.size),
+      };
+    }
+
+    return undefined;
+  }
+
   render() {
     this.controls.update();
+
+    this.handleIntersection();
 
     this.renderer.render(this.scene, this.camera);
   }
