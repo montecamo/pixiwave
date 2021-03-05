@@ -32,31 +32,12 @@ const shape = makeBasicShape(
 );
 const wave = makeBasicWaveShape(
   centerPoint,
-  //makePoint(-options.size / 2, -options.size / 2),
   { type: "circle" },
   { type: "infinite", speed: options.speed, func: waveFunction }
-);
-const wave2 = makeBasicWaveShape(
-  makePoint(options.size / 2, options.size / 2),
-  { type: "circle" },
-  { type: "pulse", speed: options.speed, func: waveFunction }
-);
-const wave3 = makeBasicWaveShape(
-  makePoint(options.size / 2, -options.size / 2),
-  { type: "circle" },
-  { type: "pulse", speed: options.speed, func: waveFunction }
-);
-const wave4 = makeBasicWaveShape(
-  makePoint(-options.size / 2, options.size / 2),
-  { type: "circle" },
-  { type: "pulse", speed: options.speed, func: waveFunction }
 );
 
 const coreRenderer = makeRenderer(shape);
 coreRenderer.addWave(wave);
-//coreRenderer.addWave(wave2);
-//coreRenderer.addWave(wave3);
-//coreRenderer.addWave(wave4);
 
 const threeRenderer = new ThreeRenderer(document.body);
 threeRenderer.init();
