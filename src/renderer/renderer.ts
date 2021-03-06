@@ -39,6 +39,7 @@ type Renderer = {
   render(): Array<Point>;
   renderColors(): Array<Color>;
   tick(): void;
+  getWavesCount(): number;
 };
 
 export function makeRenderState(
@@ -152,6 +153,10 @@ export function makeRenderer(shape: Shape): Renderer {
     return ret;
   }
 
+  function getWavesCount(): number {
+    return getRenderStateWaves(state).length;
+  }
+
   return {
     render,
     renderColors,
@@ -161,5 +166,6 @@ export function makeRenderer(shape: Shape): Renderer {
     tick,
     updateShape,
     clearWaves,
+    getWavesCount,
   };
 }

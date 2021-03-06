@@ -1,4 +1,8 @@
-import { ThreeRenderer, installStats } from "./three-renderer";
+import {
+  ThreeRenderer,
+  installStats,
+  BACKGROUND_COLOR,
+} from "./three-renderer";
 
 import {
   makePoint,
@@ -9,6 +13,7 @@ import {
 import { installControls } from "./controls";
 
 import { makeRenderer } from "./renderer";
+import { darken } from "./utils";
 
 const options = {
   amplitude: 10,
@@ -83,11 +88,19 @@ function loop() {
 
   coreRenderer.tick();
   const points = coreRenderer.render();
+
+  const colors = options.rainbow
+    ? coreRenderer.renderColors()
+    : points.map(() => undefined);
+  const backgroundColor =
+    options.rainbow && coreRenderer.getWavesCount() > 0
+      ? darken(BACKGROUND_COLOR, coreRenderer.getWavesCount() / 5)
+      : BACKGROUND_COLOR;
+
   threeRenderer.updateBoxes(points);
 
-  threeRenderer.updateColors(
-    options.rainbow ? coreRenderer.renderColors() : points.map(() => undefined)
-  );
+  threeRenderer.updateColors(colors);
+  threeRenderer.updateBackgroundColor(backgroundColor);
 
   threeRenderer.render();
 

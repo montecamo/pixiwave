@@ -198,6 +198,10 @@ export class ThreeRenderer {
     });
   }
 
+  updateBackgroundColor(color) {
+    this.scene.background = new THREE.Color(color);
+  }
+
   addFloor() {
     const planeGeometry = new THREE.PlaneBufferGeometry(500, 500);
     const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.35 });
