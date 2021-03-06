@@ -6,7 +6,7 @@ import type {
   Point,
 } from "../abstractShapes";
 import {
-  getWaveShapeDepth,
+  getWaveShapePointDepth,
   increaseWaveShape,
   getShapePoints,
   makePoint,
@@ -126,7 +126,7 @@ export function makeRenderer(shape: Shape): Renderer {
         getPointY(point),
         interfereWaves(
           waves
-            .map((wave) => getWaveShapeDepth(wave)(point))
+            .map((wave) => getWaveShapePointDepth(wave, point))
             .filter((d) => d >= 0)
         )
       );
@@ -140,7 +140,7 @@ export function makeRenderer(shape: Shape): Renderer {
 
     const ret = shapePoints.map((point) => {
       const intersectingWaves = waves.filter(
-        (wave) => getWaveShapeDepth(wave)(point) > 0
+        (wave) => getWaveShapePointDepth(wave, point) > 0
       );
 
       if (intersectingWaves.length) {
