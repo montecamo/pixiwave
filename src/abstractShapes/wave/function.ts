@@ -22,10 +22,11 @@ export function makeWaveFunction(
   };
 }
 
-export function getWaveFunctionFunction(
-  waveFunction: WaveFunction
-): WaveFunctionFunction {
-  return waveFunction.function;
+export function applyWaveFunction(
+  waveFunction: WaveFunction,
+  x: number
+): number {
+  return waveFunction.function(x);
 }
 export function getWaveFunctionFrequency(
   waveFunction: WaveFunction

@@ -1,6 +1,6 @@
 import type { WavePart, WaveSpeed, WaveDistance, WavePartGetter } from "./wave";
 import type { WaveFunction } from "./function";
-import { getWaveFunctionFunction, getWaveFunctionFrequency } from "./function";
+import { applyWaveFunction, getWaveFunctionFrequency } from "./function";
 
 const PULSE_NEUTRAL = 0;
 
@@ -66,6 +66,6 @@ export function getPulsePart(pulse: Pulse): WavePartGetter {
       return PULSE_NEUTRAL;
     }
 
-    return getWaveFunctionFunction(waveFunction)(part - start);
+    return applyWaveFunction(waveFunction, part - start);
   };
 }
