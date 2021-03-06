@@ -4,24 +4,19 @@ import {
   getTaggedType,
   getTaggedData,
 } from "../../utils";
-import type { TaggedData } from "../../utils";
-import type { InfiniteWave } from "./infiniteWave";
-import type { Pulse } from "./pulse";
 
 import type { WaveFunction } from "./function";
 
 import { initTagsTable } from "./tagsTable";
 
-export type WaveType = "infinite" | "pulse";
-export type RawWave = InfiniteWave | Pulse;
-
-export type Wave = TaggedData<WaveType, RawWave>;
-
-export type WavePart = number;
-export type WavePartGetter = (part: number) => WavePart;
-export type WaveDistance = number;
-export type WaveLength = number;
-export type WaveSpeed = number;
+import type {
+  WaveType,
+  RawWave,
+  Wave,
+  WavePartGetter,
+  WaveDistance,
+  WaveSpeed,
+} from "./types";
 
 const utilsTable = initTagsTable();
 

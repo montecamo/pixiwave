@@ -1,4 +1,10 @@
-import type { WavePart, WaveSpeed, WaveDistance, WavePartGetter } from "./wave";
+import type {
+  WavePart,
+  WaveSpeed,
+  WaveDistance,
+  WavePartGetter,
+} from "./types";
+
 import type { WaveFunction } from "./function";
 import { applyWaveFunction, getWaveFunctionFrequency } from "./function";
 
