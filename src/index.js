@@ -15,18 +15,13 @@ import { installControls } from "./controls";
 import { makeRenderer } from "./renderer";
 import { darken } from "./utils";
 
-const options = {
-  amplitude: 10,
-  frequency: 0.1,
-  size: 30,
-  speed: 0.01,
-  infinite: true,
-  rainbow: false,
-  ["wave type"]: "circle",
-  ["clear waves"]: () => {
-    coreRenderer.clearWaves();
-  },
-};
+const { get, on } = installControls();
+
+on("clear waves", () => {
+  coreRenderer.clearWaves();
+});
+const options = get();
+console.warn("options", options);
 
 const centerPoint = makePoint(0, 0);
 const waveFunction = makeWaveFunction(options.frequency, options.amplitude);
@@ -49,8 +44,6 @@ const threeRenderer = new ThreeRenderer(document.body);
 threeRenderer.init();
 
 const stats = installStats(document.getElementById("stats"));
-installControls(options);
-
 window.addEventListener("click", () => {
   const hoveredCoordinates = threeRenderer.getHoveredBoxCoordinates();
 
