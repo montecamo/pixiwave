@@ -15,21 +15,19 @@ import {
   interfereWaves,
   updateWaveShapeFunction,
   updateWaveShapeSpeed,
-  getWaveShapeSize,
-  getWaveShapeType,
   getWaveShapeColor,
-  getShapeSize,
 } from "../models";
 import type { Color } from "../utils";
 import { mixColors } from "../utils";
+import { isWaveFinished } from "./utils";
 
 type RenderWaves = Array<WaveShape>;
 type RenderShape = Shape;
-
 type RenderState = {
   waves: RenderWaves;
   shape: RenderShape;
 };
+
 type Renderer = {
   addWave(wave: WaveShape): void;
   clearWaves(): void;
@@ -60,10 +58,13 @@ export function getRenderStateShape(state: RenderState): RenderShape {
   return state.shape;
 }
 
-// --------------------------------------------------------------------------------------------------
-
 export function makeRenderer(shape: Shape): Renderer {
   let state = makeInitialRenderState(shape);
+
+  // MUTATORS
+  function updateShape(shape) {
+    state = makeRenderState(getRenderStateWaves(state), shape);
+  }
 
   function addWave(wave) {
     const waves = getRenderStateWaves(state);
@@ -93,28 +94,17 @@ export function makeRenderer(shape: Shape): Renderer {
     );
   }
 
-  function updateShape(shape) {
-    state = makeRenderState(getRenderStateWaves(state), shape);
-  }
-
-  function isWaveFinished(wave) {
-    const shape = getRenderStateShape(state);
-
-    return (
-      getWaveShapeType(wave) === "pulse" &&
-      getShapeSize(shape) * 2 < getWaveShapeSize(wave)
-    );
-  }
-
   function tick() {
     const waves = getRenderStateWaves(state);
+    const shape = getRenderStateShape(state);
 
     state = makeRenderState(
-      waves.map(increaseWaveShape).filter((w) => !isWaveFinished(w)),
-      getRenderStateShape(state)
+      waves.map(increaseWaveShape).filter((w) => !isWaveFinished(shape, w)),
+      shape
     );
   }
 
+  // GETTERS
   function render(): Array<Point> {
     const shape = getRenderStateShape(state);
     const waves = getRenderStateWaves(state);
@@ -158,14 +148,14 @@ export function makeRenderer(shape: Shape): Renderer {
   }
 
   return {
-    render,
-    renderColors,
+    addWave,
+    updateShape,
     updateWaveFunction,
     updateWaveSpeed,
-    addWave,
-    tick,
-    updateShape,
     clearWaves,
+    tick,
+    render,
+    renderColors,
     getWavesCount,
   };
 }
