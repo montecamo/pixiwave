@@ -14,7 +14,7 @@ import { darken } from "./utils";
 const stats = installStats(document.getElementById("stats"));
 const controls = installControls();
 
-controls.on("clear waves", () => {
+controls.on("clear", () => {
   coreRenderer.clearWaves();
 });
 
@@ -34,7 +34,7 @@ function makeShape() {
 function makeWave(point) {
   return makeBasicWaveShape(
     point,
-    { type: controls.get("wave type") },
+    { type: controls.get("wavetype") },
     {
       type: controls.get("infinite") ? "infinite" : "pulse",
       speed: controls.get("speed"),
