@@ -18,7 +18,7 @@ import {
   getWaveShapeColor,
 } from "../models";
 import type { Color } from "../utils";
-import { mixColors } from "../utils";
+import { brighten, mixColors } from "../utils";
 import { isWaveFinished } from "./utils";
 
 type RenderWaves = Array<WaveShape>;
@@ -132,9 +132,17 @@ export function makeRenderer(shape: Shape): Renderer {
       const intersectingWaves = waves.filter(
         (wave) => getWaveShapePointDepth(wave, point) > 0
       );
+      const height = interfereWaves(
+        waves
+          .map((wave) => getWaveShapePointDepth(wave, point))
+          .filter((d) => d >= 0)
+      );
 
       if (intersectingWaves.length) {
-        return mixColors(intersectingWaves.map(getWaveShapeColor));
+        return brighten(
+          mixColors(intersectingWaves.map(getWaveShapeColor)),
+          height / 10
+        );
       }
 
       return undefined;

@@ -24,6 +24,7 @@ export class ThreeRenderer {
     this.boxes = [];
     this.color = new THREE.Color(BOX_COLOR);
     this.activeColor = new THREE.Color(ACTIVE_BOX_COLOR);
+    this.backgroundColor = new THREE.Color(BACKGROUND_COLOR);
 
     this.addScene();
     this.addCamera();
@@ -65,7 +66,7 @@ export class ThreeRenderer {
 
   addScene() {
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(BACKGROUND_COLOR);
+    this.scene.background = this.backgroundColor;
   }
 
   addCamera() {
@@ -287,7 +288,7 @@ export class ThreeRenderer {
   }
 
   getBackgroundColor() {
-    return BACKGROUND_COLOR;
+    return this.backgroundColor;
   }
 
   render() {

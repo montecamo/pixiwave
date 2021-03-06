@@ -25,3 +25,7 @@ export function mixColors(colors: Array<Color>): Color {
 export function darken(color, amount): Color {
   return chroma(color).darken(amount).css();
 }
+
+export function brighten(color, amount): Color {
+  return chroma(color).brighten(amount).css();
+}
