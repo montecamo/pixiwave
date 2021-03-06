@@ -82,6 +82,7 @@ function loop() {
 
   coreRenderer.tick();
   threeRenderer.updateBoxes(coreRenderer.render());
+  threeRenderer.updateColors(coreRenderer.renderColors());
 
   threeRenderer.render();
 

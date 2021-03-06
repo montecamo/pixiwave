@@ -161,6 +161,8 @@ export class ThreeRenderer {
       this.mesh.setColorAt(i, this.color);
     });
 
+    this.updateColors(points.map(() => undefined));
+
     this.mesh.instanceMatrix.needsUpdate = true;
   }
 
@@ -175,12 +177,24 @@ export class ThreeRenderer {
     }
 
     points.forEach(({ x, y, z }, i) => {
-      this.boxes[x][y].scale.y = Math.abs(z * 0.1) + 0.1;
+      this.boxes[x][y].scale.y = z * 0.1 + 0.1;
 
       this.boxes[x][y].updateMatrix();
       this.mesh.setMatrixAt(i, this.boxes[x][y].matrix);
+      this.mesh.setColorAt(i, this.colors[i]);
+    });
 
-      this.mesh.instanceMatrix.needsUpdate = true;
+    this.mesh.instanceMatrix.needsUpdate = true;
+    this.mesh.instanceColor.needsUpdate = true;
+  }
+
+  updateColors(colors) {
+    this.colors = colors.map((color) => {
+      if (color) {
+        return new THREE.Color(color);
+      }
+
+      return this.color;
     });
   }
 

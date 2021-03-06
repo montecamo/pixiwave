@@ -17,8 +17,11 @@ import {
   updateWaveShapeSpeed,
   getWaveShapeSize,
   getWaveShapeType,
+  getWaveShapeColor,
   getShapeSize,
 } from "../abstractShapes";
+import type { Color } from "../utils";
+import { mixColors } from "../utils";
 
 type RenderWaves = Array<WaveShape>;
 type RenderShape = Shape;
@@ -34,6 +37,7 @@ type Renderer = {
   updateWaveSpeed(speed: WaveSpeed): void;
   updateShape(shape: Shape): void;
   render(): Array<Point>;
+  renderColors(): Array<Color>;
   tick(): void;
 };
 
@@ -119,13 +123,38 @@ export function makeRenderer(shape: Shape): Renderer {
       return makePoint(
         getPointX(point),
         getPointY(point),
-        interfereWaves(waves.map((wave) => getWaveShapeDepth(wave)(point)))
+        interfereWaves(
+          waves
+            .map((wave) => getWaveShapeDepth(wave)(point))
+            .filter((d) => d >= 0)
+        )
       );
     });
   }
 
+  function renderColors(): Array<Color> {
+    const shape = getRenderStateShape(state);
+    const waves = getRenderStateWaves(state);
+    const shapePoints = getShapePoints(shape);
+
+    const ret = shapePoints.map((point) => {
+      const intersectingWaves = waves.filter(
+        (wave) => getWaveShapeDepth(wave)(point) > 0
+      );
+
+      if (intersectingWaves.length) {
+        return mixColors(intersectingWaves.map(getWaveShapeColor));
+      }
+
+      return undefined;
+    });
+
+    return ret;
+  }
+
   return {
     render,
+    renderColors,
     updateWaveFunction,
     updateWaveSpeed,
     addWave,
