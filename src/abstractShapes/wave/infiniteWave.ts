@@ -1,9 +1,4 @@
-import type {
-  WavePart,
-  WaveSpeed,
-  WaveDistance,
-  WavePartGetter,
-} from "./types";
+import type { WavePart, WaveSpeed, WaveDistance } from "./types";
 
 import type { WaveFunction } from "./function";
 import { applyWaveFunction, getWaveFunctionFrequency } from "./function";
@@ -86,14 +81,15 @@ export function increaseInfiniteWave(wave: InfiniteWave): InfiniteWave {
   );
 }
 
-export function getInfiniteWavePart(wave: InfiniteWave): WavePartGetter {
+export function getInfiniteWavePart(
+  wave: InfiniteWave,
+  part: number
+): WavePart {
   const waveFunction = getInfiniteWaveFunction(wave);
 
-  return (part) => {
-    if (getInfiniteWaveDistance(wave) < part) {
-      return WAVE_NEUTRAL;
-    }
+  if (getInfiniteWaveDistance(wave) < part) {
+    return WAVE_NEUTRAL;
+  }
 
-    return applyWaveFunction(waveFunction, getInfiniteWaveStart(wave) - part);
-  };
+  return applyWaveFunction(waveFunction, getInfiniteWaveStart(wave) - part);
 }

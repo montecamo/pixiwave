@@ -8,7 +8,6 @@ export type RawWave = InfiniteWave | Pulse;
 export type Wave = TaggedData<WaveType, RawWave>;
 
 export type WavePart = number;
-export type WavePartGetter = (part: number) => WavePart;
 export type WaveDistance = number;
 export type WaveLength = number;
 export type WaveSpeed = number;

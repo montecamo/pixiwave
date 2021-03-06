@@ -13,7 +13,7 @@ import type {
   WaveType,
   RawWave,
   Wave,
-  WavePartGetter,
+  WavePart,
   WaveDistance,
   WaveSpeed,
 } from "./types";
@@ -37,8 +37,8 @@ export function increaseWave(wave: Wave): Wave {
   return makeWaveSuccessor(wave, operate<RawWave>(wave, "increase"));
 }
 
-export function getWavePart(wave: Wave): WavePartGetter {
-  return operate<WavePartGetter>(wave, "makePartGetter");
+export function getWavePart(wave: Wave, part: number): WavePart {
+  return operate<WavePart>(wave, "makePartGetter", part);
 }
 
 export function getWaveDistance(wave: Wave): WaveDistance {

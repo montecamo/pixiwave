@@ -55,7 +55,7 @@ export function getWaveShapeDepth(
 
     const part = getShapePointDepth(shape)(point);
 
-    return Math.abs(getWavePart(wave)(part));
+    return Math.abs(getWavePart(wave, part));
   };
 }
 
