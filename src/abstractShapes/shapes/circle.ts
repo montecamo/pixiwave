@@ -13,6 +13,7 @@ export type Circle = {
   radius: number;
 };
 
+// CONSTRUCTORS
 function makeCircle(center: Point, size: number): Circle {
   return { center, radius: size / 2 };
 }
@@ -21,6 +22,7 @@ export function makeBasicCircle(center: Point, size: number = 0.5): Circle {
   return makeCircle(center, size);
 }
 
+// GETTERS
 export function getCircleCenter(circle: Circle): Point {
   return circle.center;
 }
@@ -37,27 +39,21 @@ export function getCircleCentralCircle(circle: Circle): Circle {
   return makeCircle(getCircleCenter(circle), 0.5);
 }
 
-export function extendCircle(circle: Circle): Circle {
-  return makeCircle(getCircleCenter(circle), getCircleRadius(circle) + 1);
-}
-
 export function getCircleExtremePoints(circle: Circle): Array<Point> {
   throw new Error("circle is round, lol");
 }
 
-export function isPointInCircle(circle: Circle): (point: Point) => boolean {
-  return (point) => {
-    const center = getCircleCenter(circle);
-    const centerX = getPointX(center);
-    const centerY = getPointY(center);
+export function isPointInCircle(circle: Circle, point: Point): boolean {
+  const center = getCircleCenter(circle);
+  const centerX = getPointX(center);
+  const centerY = getPointY(center);
 
-    const pointX = getPointX(point);
-    const pointY = getPointY(point);
+  const pointX = getPointX(point);
+  const pointY = getPointY(point);
 
-    const radius = getCircleRadius(circle);
+  const radius = getCircleRadius(circle);
 
-    return square(pointX - centerX) + square(pointY - centerY) < square(radius);
-  };
+  return square(pointX - centerX) + square(pointY - centerY) < square(radius);
 }
 
 export function getCirclePoints(circle: Circle): Array<Point> {
@@ -77,7 +73,7 @@ export function getCirclePoints(circle: Circle): Array<Point> {
 
   for (let y = getPointY(topLeft); y <= getPointY(bottomRight); y++) {
     for (let x = getPointX(topLeft); x <= getPointX(bottomRight); x++) {
-      if (isPointInCircle(circle)(makePoint(x, y))) {
+      if (isPointInCircle(circle, makePoint(x, y))) {
         points.push(makePoint(x, y));
       }
     }
@@ -86,10 +82,13 @@ export function getCirclePoints(circle: Circle): Array<Point> {
   return points;
 }
 
-export function getCirclePointDepth(circle: Circle): (point: Point) => number {
-  return (point) => {
-    const center = getCircleCenter(circle);
+export function getCirclePointDepth(circle: Circle, point: Point): number {
+  const center = getCircleCenter(circle);
 
-    return distanceBetweenPoints(center, point);
-  };
+  return distanceBetweenPoints(center, point);
+}
+
+// MUTATORS
+export function extendCircle(circle: Circle): Circle {
+  return makeCircle(getCircleCenter(circle), getCircleRadius(circle) + 1);
 }

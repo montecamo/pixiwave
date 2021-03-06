@@ -18,8 +18,8 @@ export type WaveShape = {
   wave: Wave;
   color: Color;
 };
-// CONSTRUCTORS
 
+// CONSTRUCTORS
 function makeWaveShape(shape: Shape, wave: Wave, color: Color): WaveShape {
   return { shape, wave, color };
 }
@@ -41,7 +41,6 @@ export function makeBasicWaveShape(
 }
 
 // GETTERS
-
 function getWaveShapeShape(waveShape: WaveShape): Shape {
   return waveShape.shape;
 }
@@ -59,7 +58,7 @@ export function getWaveShapePointDepth(
   const wave = getWaveShapeWave(waveShape);
   const shape = getWaveShapeShape(waveShape);
 
-  const part = getShapePointDepth(shape)(point);
+  const part = getShapePointDepth(shape, point);
 
   return Math.abs(getWavePart(wave, part));
 }
