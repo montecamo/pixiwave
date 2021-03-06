@@ -23,8 +23,8 @@ export function installControls(): ControlsInterface {
     frequency: 0.4,
     size: 31,
     speed: 0.04,
-    infinite: true,
-    rainbow: false,
+    infinite: false,
+    rainbow: true,
     wavetype: "circle" as "circle",
     clear: () => {},
   };

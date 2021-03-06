@@ -288,7 +288,7 @@ export class ThreeRenderer {
   }
 
   getBackgroundColor() {
-    return this.backgroundColor;
+    return BACKGROUND_COLOR;
   }
 
   render() {

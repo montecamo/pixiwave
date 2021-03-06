@@ -43,7 +43,15 @@ function makeWave(point) {
   );
 }
 
-const wave = makeWave(centerPoint);
+const wave = makeBasicWaveShape(
+  centerPoint,
+  { type: controls.get("wavetype") },
+  {
+    type: "infinite",
+    speed: controls.get("speed"),
+    func: makeFunction(),
+  }
+);
 
 const coreRenderer = makeRenderer(makeShape());
 coreRenderer.addWave(wave);
