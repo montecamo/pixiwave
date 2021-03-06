@@ -102,7 +102,7 @@ export function makeRenderer(shape: Shape): Renderer {
 
     return (
       getWaveShapeType(wave) === "pulse" &&
-      getShapeSize(shape) * 3 < getWaveShapeSize(wave)
+      getShapeSize(shape) * 2 < getWaveShapeSize(wave)
     );
   }
 
