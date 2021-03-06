@@ -11,12 +11,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/chroma-js": "^2.1.3",
     "@types/dat.gui": "^0.7.6",
     "parcel": "^1.12.4",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"
   },
   "dependencies": {
+    "chroma-js": "^2.1.1",
     "dat.gui": "^0.7.7",
     "stats": "^1.0.0",
     "stats-js": "^1.0.1",
