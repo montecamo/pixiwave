@@ -16,6 +16,7 @@ const options = {
   size: 30,
   speed: 0.01,
   infinite: true,
+  rainbow: false,
   ["wave type"]: "circle",
   ["clear waves"]: () => {
     coreRenderer.clearWaves();
@@ -81,8 +82,12 @@ function loop() {
   coreRenderer.updateWaveSpeed(options.speed);
 
   coreRenderer.tick();
-  threeRenderer.updateBoxes(coreRenderer.render());
-  threeRenderer.updateColors(coreRenderer.renderColors());
+  const points = coreRenderer.render();
+  threeRenderer.updateBoxes(points);
+
+  threeRenderer.updateColors(
+    options.rainbow ? coreRenderer.renderColors() : points.map(() => undefined)
+  );
 
   threeRenderer.render();
 
