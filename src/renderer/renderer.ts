@@ -4,7 +4,7 @@ import type {
   WaveSpeed,
   Shape,
   Point,
-} from "../abstractShapes";
+} from "../models";
 import {
   getWaveShapePointDepth,
   increaseWaveShape,
@@ -19,7 +19,7 @@ import {
   getWaveShapeType,
   getWaveShapeColor,
   getShapeSize,
-} from "../abstractShapes";
+} from "../models";
 import type { Color } from "../utils";
 import { mixColors } from "../utils";
 

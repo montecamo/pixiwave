@@ -9,7 +9,7 @@ import {
   makeBasicShape,
   makeBasicWaveShape,
   makeWaveFunction,
-} from "./abstractShapes";
+} from "./models";
 import { installControls } from "./controls";
 
 import { makeRenderer } from "./renderer";
