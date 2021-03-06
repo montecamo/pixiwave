@@ -53,6 +53,7 @@ export class ThreeRenderer {
     this.directionalLight.shadow.camera.bottom = -20;
     this.directionalLight.shadow.camera.zoom = 1;
     this.directionalLight.shadow.camera.needsUpdate = true;
+    this.directionalLight.shadow.bias = -0.00009;
 
     const targetObject = new THREE.Object3D();
     targetObject.position.set(-50, -82, 40);
@@ -181,7 +182,7 @@ export class ThreeRenderer {
     }
 
     points.forEach(({ x, y, z }, i) => {
-      this.boxes[x][y].scale.y = z * 0.1 + 0.1;
+      this.boxes[x][y].scale.y = z * 0.1 + 0.001;
 
       this.boxes[x][y].updateMatrix();
       this.mesh.setMatrixAt(i, this.boxes[x][y].matrix);
