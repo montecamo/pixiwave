@@ -19,10 +19,10 @@ export type ControlsInterface = {
 
 export function installControls(): ControlsInterface {
   const data = {
-    amplitude: 10,
-    frequency: 0.1,
-    size: 30,
-    speed: 0.01,
+    amplitude: 12,
+    frequency: 0.4,
+    size: 31,
+    speed: 0.04,
     infinite: true,
     rainbow: false,
     ["wave type"]: "circle" as "circle",
@@ -40,6 +40,7 @@ export function installControls(): ControlsInterface {
   gui.add(data, "clear waves");
 
   return {
+    // @ts-ignore
     get: (key) => data[key],
     on: (buttonId, cb) => {
       data[buttonId] = cb;
