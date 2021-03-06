@@ -1,11 +1,6 @@
-import { getTaggedType } from "../utils";
+import { getTaggedType, randomColor } from "../utils";
 import type { Shape, ShapeType, ShapeSize, Point } from "./shapes";
-import {
-  makeBasicShape,
-  getShapeCenter,
-  getShapePointDepth,
-  getShapeSize,
-} from "./shapes";
+import { makeBasicShape, getShapeCenter, getShapePointDepth } from "./shapes";
 
 import type { Wave, WaveType, WaveFunction, WaveSpeed } from "./wave";
 import {
@@ -17,9 +12,11 @@ import {
   updateWaveSpeed,
 } from "./wave";
 
+export type WaveShapeColor = string;
 export type WaveShape = {
   shape: Shape;
   wave: Wave;
+  color: WaveShapeColor;
 };
 export type ShapeOptions = {
   size: ShapeSize;
@@ -31,8 +28,12 @@ type WaveOptions = {
   speed: WaveSpeed;
 };
 
-function makeWaveShape(shape: Shape, wave: Wave): WaveShape {
-  return { shape, wave };
+function makeWaveShape(
+  shape: Shape,
+  wave: Wave,
+  color: WaveShapeColor
+): WaveShape {
+  return { shape, wave, color };
 }
 
 function getWaveShapeShape(waveShape: WaveShape): Shape {
@@ -40,6 +41,9 @@ function getWaveShapeShape(waveShape: WaveShape): Shape {
 }
 function getWaveShapeWave(waveShape: WaveShape): Wave {
   return waveShape.wave;
+}
+export function getWaveShapeColor(waveShape: WaveShape): WaveShapeColor {
+  return waveShape.color;
 }
 
 export function getWaveShapeDepth(
@@ -51,15 +55,16 @@ export function getWaveShapeDepth(
 
     const part = getShapePointDepth(shape)(point);
 
-    return getWavePart(wave)(part);
+    return Math.abs(getWavePart(wave)(part));
   };
 }
 
 export function increaseWaveShape(waveShape: WaveShape): WaveShape {
   const shape = getWaveShapeShape(waveShape);
   const wave = getWaveShapeWave(waveShape);
+  const color = getWaveShapeColor(waveShape);
 
-  return makeWaveShape(shape, increaseWave(wave));
+  return makeWaveShape(shape, increaseWave(wave), color);
 }
 
 export function makeBasicWaveShape(
@@ -69,8 +74,9 @@ export function makeBasicWaveShape(
 ): WaveShape {
   const shape = makeBasicShape(point, shapeOptions.type, shapeOptions.size);
   const wave = makeBasicWave(waveOptions.type, waveOptions.func);
+  const color = randomColor();
 
-  return makeWaveShape(shape, wave);
+  return makeWaveShape(shape, wave, color);
 }
 
 export function getWaveShapeSize(waveShape: WaveShape): number {
@@ -98,8 +104,9 @@ export function updateWaveShapeShape(
     shapeOptions.size
   );
   const wave = getWaveShapeWave(prevWaveShape);
+  const color = getWaveShapeColor(prevWaveShape);
 
-  return makeWaveShape(shape, wave);
+  return makeWaveShape(shape, wave, color);
 }
 
 export function updateWaveShapeFunction(
@@ -108,8 +115,9 @@ export function updateWaveShapeFunction(
 ): WaveShape {
   const shape = getWaveShapeShape(prevWaveShape);
   const wave = getWaveShapeWave(prevWaveShape);
+  const color = getWaveShapeColor(prevWaveShape);
 
-  return makeWaveShape(shape, updateWaveFunction(wave, waveFunction));
+  return makeWaveShape(shape, updateWaveFunction(wave, waveFunction), color);
 }
 
 export function updateWaveShapeSpeed(
@@ -118,6 +126,7 @@ export function updateWaveShapeSpeed(
 ): WaveShape {
   const shape = getWaveShapeShape(prevWaveShape);
   const wave = getWaveShapeWave(prevWaveShape);
+  const color = getWaveShapeColor(prevWaveShape);
 
-  return makeWaveShape(shape, updateWaveSpeed(wave, waveSpeed));
+  return makeWaveShape(shape, updateWaveSpeed(wave, waveSpeed), color);
 }
