@@ -242,6 +242,8 @@ export class ThreeRenderer {
   }
 
   clearLastIntersection() {
+    document.body.style.cursor = "default";
+
     this.mesh.setColorAt(this.lastInstanceId, this.color);
 
     this.lastInstanceId = undefined;
@@ -262,6 +264,8 @@ export class ThreeRenderer {
       this.mesh.setColorAt(instanceId, this.activeColor);
       this.lastInstanceId = instanceId;
       this.mesh.instanceColor.needsUpdate = true;
+
+      document.body.style.cursor = "pointer";
     }
   }
 
