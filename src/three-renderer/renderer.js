@@ -271,6 +271,10 @@ export class ThreeRenderer {
     return undefined;
   }
 
+  getBackgroundColor() {
+    return BACKGROUND_COLOR;
+  }
+
   render() {
     this.controls.update();
 

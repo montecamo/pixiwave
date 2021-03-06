@@ -29,7 +29,7 @@ function makeShapeSuccessor(shape: Shape, rawShape: RawShape): Shape {
 export function makeBasicShape(
   point: Point,
   type: ShapeType,
-  size: ShapeSize
+  size?: ShapeSize
 ): Shape {
   const func = getTagsTable(utilsTable, type, "makeBasic");
 

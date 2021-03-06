@@ -26,14 +26,14 @@ function makeWaveShape(shape: Shape, wave: Wave, color: Color): WaveShape {
 
 export function makeBasicWaveShape(
   point: Point,
-  shapeOptions: { size: ShapeSize; type: ShapeType },
+  shapeOptions: { type: ShapeType },
   waveOptions: {
     func: WaveFunction;
     type: WaveType;
     speed: WaveSpeed;
   }
 ): WaveShape {
-  const shape = makeBasicShape(point, shapeOptions.type, shapeOptions.size);
+  const shape = makeBasicShape(point, shapeOptions.type);
   const wave = makeBasicWave(waveOptions.type, waveOptions.func);
   const color = randomColor();
 

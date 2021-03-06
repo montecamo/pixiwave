@@ -13,7 +13,7 @@ export type Options = {
 };
 
 export type ControlsInterface = {
-  get: () => Options;
+  get: <T extends Options[keyof Options]>(key: keyof Options) => T;
   on: (buttonId: string, cb: () => void) => void;
 };
 
@@ -40,7 +40,7 @@ export function installControls(): ControlsInterface {
   gui.add(data, "clear waves");
 
   return {
-    get: () => data,
+    get: (key) => data[key],
     on: (buttonId, cb) => {
       data[buttonId] = cb;
     },
