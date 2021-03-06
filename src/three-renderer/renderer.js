@@ -271,6 +271,10 @@ export class ThreeRenderer {
     return undefined;
   }
 
+  onClick(cb) {
+    cb(this.getHoveredBoxCoordinates());
+  }
+
   getBackgroundColor() {
     return BACKGROUND_COLOR;
   }

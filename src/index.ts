@@ -51,15 +51,13 @@ coreRenderer.addWave(wave);
 const threeRenderer = new ThreeRenderer(document.body);
 threeRenderer.init();
 
-window.addEventListener("click", () => {
-  const hoveredCoordinates = threeRenderer.getHoveredBoxCoordinates();
-
-  if (hoveredCoordinates) {
+threeRenderer.onClick((coordinates) => {
+  if (coordinates) {
     coreRenderer.addWave(
       makeWave(
         makePoint(
-          hoveredCoordinates.x - controls.get<number>("size") / 2 + 0.5,
-          hoveredCoordinates.y - controls.get<number>("size") / 2 + 0.5
+          coordinates.x - controls.get<number>("size") / 2 + 0.5,
+          coordinates.y - controls.get<number>("size") / 2 + 0.5
         )
       )
     );
