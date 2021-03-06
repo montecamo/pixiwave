@@ -45,27 +45,27 @@ function getInfiniteWaveFunction(wave: InfiniteWave): WaveFunction {
 }
 
 export function updateInfiniteWaveFuncion(
-  wave: InfiniteWave
-): (func: WaveFunction) => InfiniteWave {
-  return (func) =>
-    makeInfiniteWave(
-      func,
-      getInfiniteWaveStart(wave),
-      getInfiniteWaveDistance(wave),
-      getInfiniteWaveSpeed(wave)
-    );
+  wave: InfiniteWave,
+  func: WaveFunction
+): InfiniteWave {
+  return makeInfiniteWave(
+    func,
+    getInfiniteWaveStart(wave),
+    getInfiniteWaveDistance(wave),
+    getInfiniteWaveSpeed(wave)
+  );
 }
 
 export function updateInfiniteWaveSpeed(
-  wave: InfiniteWave
-): (speed: WaveSpeed) => InfiniteWave {
-  return (speed) =>
-    makeInfiniteWave(
-      getInfiniteWaveFunction(wave),
-      getInfiniteWaveStart(wave),
-      getInfiniteWaveDistance(wave),
-      speed
-    );
+  wave: InfiniteWave,
+  speed: WaveSpeed
+): InfiniteWave {
+  return makeInfiniteWave(
+    getInfiniteWaveFunction(wave),
+    getInfiniteWaveStart(wave),
+    getInfiniteWaveDistance(wave),
+    speed
+  );
 }
 
 export function increaseInfiniteWave(wave: InfiniteWave): InfiniteWave {

@@ -37,16 +37,12 @@ export function getPulseFunction(pulse: Pulse): WaveFunction {
   return pulse.func;
 }
 
-export function updatePulseFuncion(
-  pulse: Pulse
-): (func: WaveFunction) => Pulse {
-  return (func) =>
-    makePulse(func, getPulseSpeed(pulse), getPulseDistance(pulse));
+export function updatePulseFuncion(pulse: Pulse, func: WaveFunction): Pulse {
+  return makePulse(func, getPulseSpeed(pulse), getPulseDistance(pulse));
 }
 
-export function updatePulseSpeed(pulse: Pulse): (speed: WaveSpeed) => Pulse {
-  return (speed) =>
-    makePulse(getPulseFunction(pulse), speed, getPulseDistance(pulse));
+export function updatePulseSpeed(pulse: Pulse, speed: WaveSpeed): Pulse {
+  return makePulse(getPulseFunction(pulse), speed, getPulseDistance(pulse));
 }
 
 export function increasePulse(pulse: Pulse): Pulse {
