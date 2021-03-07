@@ -1,5 +1,5 @@
 import type { ShapeType } from '../models';
-import * as dat from 'dat.gui';
+import { GUI } from 'dat.gui';
 
 export type Options = {
   amplitude: number;
@@ -29,7 +29,7 @@ export function installControls(): ControlsInterface {
     clear: () => {},
   };
 
-  const gui = new dat.GUI();
+  const gui = new GUI();
   const basic = gui.addFolder('Basic');
   basic.add(data, 'amplitude', 0, 40).name('Amplitude');
   basic.add(data, 'frequency', 0.001, 1, 0.001).name('Frequency');
