@@ -1,5 +1,5 @@
-import type { ShapeType } from "../models";
-import * as dat from "dat.gui";
+import type { ShapeType } from '../models';
+import * as dat from 'dat.gui';
 
 export type Options = {
   amplitude: number;
@@ -25,24 +25,24 @@ export function installControls(): ControlsInterface {
     speed: 0.04,
     infinite: false,
     rainbow: true,
-    wavetype: "circle" as "circle",
+    wavetype: 'circle' as 'circle',
     clear: () => {},
   };
 
   const gui = new dat.GUI();
-  const basic = gui.addFolder("Basic");
-  basic.add(data, "amplitude", 0, 40).name("Amplitude");
-  basic.add(data, "frequency", 0.001, 1, 0.001).name("Frequency");
-  basic.add(data, "size", 1, 100, 1).name("Size");
-  basic.add(data, "speed", 0, 0.2, 0.001).name("Speed");
-  basic.add(data, "rainbow").name("Ranbow ✨");
+  const basic = gui.addFolder('Basic');
+  basic.add(data, 'amplitude', 0, 40).name('Amplitude');
+  basic.add(data, 'frequency', 0.001, 1, 0.001).name('Frequency');
+  basic.add(data, 'size', 1, 100, 1).name('Size');
+  basic.add(data, 'speed', 0, 0.2, 0.001).name('Speed');
+  basic.add(data, 'rainbow').name('Ranbow ✨');
 
   basic.open();
 
-  const spawner = gui.addFolder("Wave spawner");
-  spawner.add(data, "wavetype", ["circle", "rectangle"]).name("Wave type️");
-  spawner.add(data, "infinite").name("Infinite ♾️");
-  spawner.add(data, "clear").name("Clear waves 🔥");
+  const spawner = gui.addFolder('Wave spawner');
+  spawner.add(data, 'wavetype', ['circle', 'rectangle']).name('Wave type️');
+  spawner.add(data, 'infinite').name('Infinite ♾️');
+  spawner.add(data, 'clear').name('Clear waves 🔥');
   spawner.open();
 
   return {

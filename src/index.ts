@@ -1,43 +1,43 @@
-import { ThreeRenderer, installStats } from "./three-renderer";
+import { ThreeRenderer, installStats } from './three-renderer';
 
 import {
   makePoint,
   makeBasicShape,
   makeBasicWaveShape,
   makeWaveFunction,
-} from "./models";
-import { installControls } from "./controls";
+} from './models';
+import { installControls } from './controls';
 
-import { makeRenderer } from "./renderer";
-import { darken } from "./utils";
+import { makeRenderer } from './renderer';
+import { darken } from './utils';
 
-const stats = installStats(document.getElementById("stats"));
+const stats = installStats(document.getElementById('stats'));
 const controls = installControls();
 
-controls.on("clear", () => {
+controls.on('clear', () => {
   coreRenderer.clearWaves();
 });
 
 const centerPoint = makePoint(0, 0);
 
 function makeFunction() {
-  return makeWaveFunction(controls.get("frequency"), controls.get("amplitude"));
+  return makeWaveFunction(controls.get('frequency'), controls.get('amplitude'));
 }
 function makeShape() {
   return makeBasicShape(
     centerPoint,
-    "rectangle",
-    Math.round(controls.get<number>("size") - 1)
+    'rectangle',
+    Math.round(controls.get<number>('size') - 1)
   );
 }
 
 function makeWave(point) {
   return makeBasicWaveShape(
     point,
-    { type: controls.get("wavetype") },
+    { type: controls.get('wavetype') },
     {
-      type: controls.get("infinite") ? "infinite" : "pulse",
-      speed: controls.get("speed"),
+      type: controls.get('infinite') ? 'infinite' : 'pulse',
+      speed: controls.get('speed'),
       func: makeFunction(),
     }
   );
@@ -45,10 +45,10 @@ function makeWave(point) {
 
 const wave = makeBasicWaveShape(
   centerPoint,
-  { type: controls.get("wavetype") },
+  { type: controls.get('wavetype') },
   {
-    type: "infinite",
-    speed: controls.get("speed"),
+    type: 'infinite',
+    speed: controls.get('speed'),
     func: makeFunction(),
   }
 );
@@ -64,8 +64,8 @@ threeRenderer.onClick((coordinates) => {
     coreRenderer.addWave(
       makeWave(
         makePoint(
-          coordinates.x - controls.get<number>("size") / 2 + 0.5,
-          coordinates.y - controls.get<number>("size") / 2 + 0.5
+          coordinates.x - controls.get<number>('size') / 2 + 0.5,
+          coordinates.y - controls.get<number>('size') / 2 + 0.5
         )
       )
     );
@@ -77,17 +77,17 @@ function loop() {
 
   coreRenderer.updateShape(makeShape());
   coreRenderer.updateWaveFunction(makeFunction());
-  coreRenderer.updateWaveSpeed(controls.get("speed"));
+  coreRenderer.updateWaveSpeed(controls.get('speed'));
 
   coreRenderer.tick();
 
   const points = coreRenderer.render();
 
-  const colors = controls.get("rainbow")
+  const colors = controls.get('rainbow')
     ? coreRenderer.renderColors()
     : points.map(() => undefined);
   const backgroundColor =
-    controls.get("rainbow") && coreRenderer.getWavesCount() > 0
+    controls.get('rainbow') && coreRenderer.getWavesCount() > 0
       ? darken(
           threeRenderer.getBackgroundColor(),
           coreRenderer.getWavesCount() / 5

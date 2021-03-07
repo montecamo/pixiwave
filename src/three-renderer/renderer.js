@@ -22,9 +22,9 @@ import {
   DynamicDrawUsage,
   InstancedMesh,
   GridHelper,
-} from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { onSingleClick } from "../utils";
+} from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { onSingleClick } from '../utils';
 
 import {
   BACKGROUND_COLOR,
@@ -32,7 +32,7 @@ import {
   SPOT_LIGHT_COLOR,
   BOX_COLOR,
   ACTIVE_BOX_COLOR,
-} from "./constants";
+} from './constants';
 
 export class ThreeRenderer {
   constructor(el) {
@@ -58,7 +58,7 @@ export class ThreeRenderer {
     this.addRaycaster();
 
     this.mount();
-    window.addEventListener("resize", this.onResize.bind(this));
+    window.addEventListener('resize', this.onResize.bind(this));
   }
 
   addDirectionalLight() {
@@ -148,7 +148,7 @@ export class ThreeRenderer {
   addMouse() {
     this.mouse = new Vector2(1, 1);
 
-    window.addEventListener("pointermove", this.onMouseMove.bind(this), true);
+    window.addEventListener('pointermove', this.onMouseMove.bind(this), true);
   }
 
   onMouseMove(event) {
@@ -264,7 +264,7 @@ export class ThreeRenderer {
   }
 
   clearLastIntersection() {
-    document.body.style.cursor = "default";
+    document.body.style.cursor = 'default';
 
     this.mesh.setColorAt(this.lastInstanceId, this.color);
 
@@ -287,7 +287,7 @@ export class ThreeRenderer {
       this.lastInstanceId = instanceId;
       this.mesh.instanceColor.needsUpdate = true;
 
-      document.body.style.cursor = "pointer";
+      document.body.style.cursor = 'pointer';
     }
   }
 

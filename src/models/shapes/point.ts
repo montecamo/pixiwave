@@ -1,4 +1,4 @@
-import { square } from "../../utils";
+import { square } from '../../utils';
 
 export type Point = {
   x: number;

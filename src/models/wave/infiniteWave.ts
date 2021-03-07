@@ -1,7 +1,7 @@
-import type { WavePart, WaveSpeed, WaveDistance } from "./types";
+import type { WavePart, WaveSpeed, WaveDistance } from './types';
 
-import type { WaveFunction } from "./function";
-import { applyWaveFunction, getWaveFunctionFrequency } from "./function";
+import type { WaveFunction } from './function';
+import { applyWaveFunction, getWaveFunctionFrequency } from './function';
 
 const WAVE_NEUTRAL = 0;
 

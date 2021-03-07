@@ -1,12 +1,12 @@
-import { square } from "../../utils";
-import type { Point } from "./point";
+import { square } from '../../utils';
+import type { Point } from './point';
 
 import {
   makePoint,
   getPointX,
   getPointY,
   distanceBetweenPoints,
-} from "./point";
+} from './point';
 
 export type Circle = {
   center: Point;
@@ -40,7 +40,7 @@ export function getCircleCentralCircle(circle: Circle): Circle {
 }
 
 export function getCircleExtremePoints(circle: Circle): Array<Point> {
-  throw new Error("circle is round, lol");
+  throw new Error('circle is round, lol');
 }
 
 export function isPointInCircle(circle: Circle, point: Point): boolean {

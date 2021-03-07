@@ -1,13 +1,13 @@
-import { fromEvent, race } from "rxjs";
+import { fromEvent, race } from 'rxjs';
 
-import { filter, switchMap, mapTo, scan } from "rxjs/operators";
+import { filter, switchMap, mapTo, scan } from 'rxjs/operators';
 
 const MIN_MOVE_DELTA = 3;
 
-const mousedown$ = fromEvent(window, "pointerdown", { capture: true }).pipe(
-  mapTo("down")
+const mousedown$ = fromEvent(window, 'pointerdown', { capture: true }).pipe(
+  mapTo('down')
 );
-const mousemove$ = fromEvent<MouseEvent>(window, "pointermove", {
+const mousemove$ = fromEvent<MouseEvent>(window, 'pointermove', {
   capture: true,
 }).pipe(
   scan(
@@ -20,17 +20,17 @@ const mousemove$ = fromEvent<MouseEvent>(window, "pointermove", {
   filter(
     ([deltaX, deltaY]) => deltaX > MIN_MOVE_DELTA || deltaY > MIN_MOVE_DELTA
   ),
-  mapTo("move")
+  mapTo('move')
 );
-const mouseup$ = fromEvent(window, "pointerup", { capture: true }).pipe(
-  mapTo("up")
+const mouseup$ = fromEvent(window, 'pointerup', { capture: true }).pipe(
+  mapTo('up')
 );
 
 export function onSingleClick(cb: () => void) {
   return mousedown$
     .pipe(
       switchMap(() => race(mousemove$, mouseup$)),
-      filter((key) => key !== "move")
+      filter((key) => key !== 'move')
     )
     .subscribe(() => cb());
 }

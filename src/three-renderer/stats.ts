@@ -1,4 +1,4 @@
-import Stats from "stats.js";
+import Stats from 'stats.js';
 
 export function installStats(el: HTMLElement) {
   const stats = new Stats();

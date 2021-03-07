@@ -1,9 +1,9 @@
-import { getTaggedType, randomColor } from "../utils";
-import type { Color } from "../utils";
-import type { Shape, ShapeType, ShapeSize, Point } from "./shapes";
-import { makeBasicShape, getShapePointDepth } from "./shapes";
+import { getTaggedType, randomColor } from '../utils';
+import type { Color } from '../utils';
+import type { Shape, ShapeType, ShapeSize, Point } from './shapes';
+import { makeBasicShape, getShapePointDepth } from './shapes';
 
-import type { Wave, WaveType, WaveFunction, WaveSpeed } from "./wave";
+import type { Wave, WaveType, WaveFunction, WaveSpeed } from './wave';
 import {
   increaseWave,
   getWavePart,
@@ -11,7 +11,7 @@ import {
   makeBasicWave,
   updateWaveFunction,
   updateWaveSpeed,
-} from "./wave";
+} from './wave';
 
 export type WaveShape = {
   shape: Shape;

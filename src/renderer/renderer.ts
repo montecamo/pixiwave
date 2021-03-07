@@ -4,7 +4,7 @@ import type {
   WaveSpeed,
   Shape,
   Point,
-} from "../models";
+} from '../models';
 import {
   getWaveShapePointDepth,
   increaseWaveShape,
@@ -16,10 +16,10 @@ import {
   updateWaveShapeFunction,
   updateWaveShapeSpeed,
   getWaveShapeColor,
-} from "../models";
-import type { Color } from "../utils";
-import { brighten, mixColors } from "../utils";
-import { isWaveFinished } from "./utils";
+} from '../models';
+import type { Color } from '../utils';
+import { brighten, mixColors } from '../utils';
+import { isWaveFinished } from './utils';
 
 type RenderWaves = Array<WaveShape>;
 type RenderShape = Shape;

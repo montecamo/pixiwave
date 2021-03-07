@@ -1,6 +1,6 @@
-import type { Point } from "./point";
+import type { Point } from './point';
 
-import { makePoint, getPointX, getPointY } from "./point";
+import { makePoint, getPointX, getPointY } from './point';
 
 export type Rectangle = {
   center: Point;

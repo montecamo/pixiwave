@@ -1,1 +1,1 @@
-export * from "./interference";
+export * from './interference';

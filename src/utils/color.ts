@@ -1,9 +1,9 @@
-import chroma from "chroma-js";
-import { makeHashTable } from "./hashtable";
+import chroma from 'chroma-js';
+import { makeHashTable } from './hashtable';
 
 export type Color = string;
 
-const hashTable = makeHashTable((colors) => colors.join(""));
+const hashTable = makeHashTable((colors) => colors.join(''));
 
 export function randomColor(): Color {
   return chroma.random().css();

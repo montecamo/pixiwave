@@ -1,50 +1,50 @@
-import { makeTagsTable, putTagsTable } from "../../utils";
-import type { TagsTable } from "../../utils";
+import { makeTagsTable, putTagsTable } from '../../utils';
+import type { TagsTable } from '../../utils';
 
-import * as pulseUtils from "./pulse";
-import * as infiniteWaveUtils from "./infiniteWave";
+import * as pulseUtils from './pulse';
+import * as infiniteWaveUtils from './infiniteWave';
 
 export function initTagsTable(): TagsTable {
   const table = makeTagsTable();
 
   // PULSE
-  putTagsTable(table, "pulse", "increase", pulseUtils.increasePulse);
-  putTagsTable(table, "pulse", "getDistance", pulseUtils.getPulseDistance);
-  putTagsTable(table, "pulse", "makeBasic", pulseUtils.makeBasicPulse);
-  putTagsTable(table, "pulse", "makePartGetter", pulseUtils.getPulsePart);
-  putTagsTable(table, "pulse", "updateFunction", pulseUtils.updatePulseFuncion);
-  putTagsTable(table, "pulse", "updateSpeed", pulseUtils.updatePulseSpeed);
+  putTagsTable(table, 'pulse', 'increase', pulseUtils.increasePulse);
+  putTagsTable(table, 'pulse', 'getDistance', pulseUtils.getPulseDistance);
+  putTagsTable(table, 'pulse', 'makeBasic', pulseUtils.makeBasicPulse);
+  putTagsTable(table, 'pulse', 'makePartGetter', pulseUtils.getPulsePart);
+  putTagsTable(table, 'pulse', 'updateFunction', pulseUtils.updatePulseFuncion);
+  putTagsTable(table, 'pulse', 'updateSpeed', pulseUtils.updatePulseSpeed);
 
   // INFINITE WAVE
   putTagsTable(
     table,
-    "infinite",
-    "increase",
+    'infinite',
+    'increase',
     infiniteWaveUtils.increaseInfiniteWave
   );
-  putTagsTable(table, "infinite", "getDistance", () => Infinity);
+  putTagsTable(table, 'infinite', 'getDistance', () => Infinity);
   putTagsTable(
     table,
-    "infinite",
-    "makeBasic",
+    'infinite',
+    'makeBasic',
     infiniteWaveUtils.makeBasicInfiniteWave
   );
   putTagsTable(
     table,
-    "infinite",
-    "makePartGetter",
+    'infinite',
+    'makePartGetter',
     infiniteWaveUtils.getInfiniteWavePart
   );
   putTagsTable(
     table,
-    "infinite",
-    "updateFunction",
+    'infinite',
+    'updateFunction',
     infiniteWaveUtils.updateInfiniteWaveFuncion
   );
   putTagsTable(
     table,
-    "infinite",
-    "updateSpeed",
+    'infinite',
+    'updateSpeed',
     infiniteWaveUtils.updateInfiniteWaveSpeed
   );
 
