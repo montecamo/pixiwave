@@ -4,6 +4,7 @@
 
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { onSingleClick } from "../utils";
 
 import {
   BACKGROUND_COLOR,
@@ -282,7 +283,7 @@ export class ThreeRenderer {
   }
 
   onClick(cb) {
-    window.addEventListener("click", () => {
+    onSingleClick(() => {
       cb(this.getHoveredBoxCoordinates());
     });
   }
