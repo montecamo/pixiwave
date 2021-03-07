@@ -2,7 +2,27 @@
   Taken and rewritten from https://codepen.io/neuboi/pen/QWKNdxo
 */
 
-import * as THREE from "three";
+import {
+  Color,
+  DirectionalLight,
+  Object3D,
+  PCFSoftShadowMap,
+  WebGLRenderer,
+  SpotLight,
+  AmbientLight,
+  PerspectiveCamera,
+  Scene,
+  Raycaster,
+  Vector2,
+  BoxBufferGeometry,
+  MeshLambertMaterial,
+  Mesh,
+  ShadowMaterial,
+  PlaneBufferGeometry,
+  DynamicDrawUsage,
+  InstancedMesh,
+  GridHelper,
+} from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { onSingleClick } from "../utils";
 
@@ -23,9 +43,9 @@ export class ThreeRenderer {
     this.size = 0;
     this.lastInstanceId = undefined;
     this.boxes = [];
-    this.color = new THREE.Color(BOX_COLOR);
-    this.activeColor = new THREE.Color(ACTIVE_BOX_COLOR);
-    this.backgroundColor = new THREE.Color(BACKGROUND_COLOR);
+    this.color = new Color(BOX_COLOR);
+    this.activeColor = new Color(ACTIVE_BOX_COLOR);
+    this.backgroundColor = new Color(BACKGROUND_COLOR);
 
     this.addScene();
     this.addCamera();
@@ -42,7 +62,7 @@ export class ThreeRenderer {
   }
 
   addDirectionalLight() {
-    this.directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.directionalLight = new DirectionalLight(0xffffff, 1);
     this.directionalLight.castShadow = true;
     this.directionalLight.position.set(0, 1, 0);
 
@@ -57,7 +77,7 @@ export class ThreeRenderer {
     this.directionalLight.shadow.camera.needsUpdate = true;
     this.directionalLight.shadow.bias = -0.00009;
 
-    const targetObject = new THREE.Object3D();
+    const targetObject = new Object3D();
     targetObject.position.set(-50, -82, 40);
     this.directionalLight.target = targetObject;
 
@@ -66,12 +86,12 @@ export class ThreeRenderer {
   }
 
   addScene() {
-    this.scene = new THREE.Scene();
+    this.scene = new Scene();
     this.scene.background = this.backgroundColor;
   }
 
   addCamera() {
-    this.camera = new THREE.PerspectiveCamera(
+    this.camera = new PerspectiveCamera(
       20,
       this.getWidth() / this.getHeight(),
       1,
@@ -87,12 +107,12 @@ export class ThreeRenderer {
   }
 
   addAmbientLight() {
-    const light = new THREE.AmbientLight(AMBIENT_LIGHT_COLOR, 0.5);
+    const light = new AmbientLight(AMBIENT_LIGHT_COLOR, 0.5);
     this.scene.add(light);
   }
 
   addSpotLight() {
-    const spotLight = new THREE.SpotLight(SPOT_LIGHT_COLOR);
+    const spotLight = new SpotLight(SPOT_LIGHT_COLOR);
     spotLight.position.set(100, 250, 150);
     spotLight.castShadow = true;
 
@@ -100,9 +120,9 @@ export class ThreeRenderer {
   }
 
   addRenderer() {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.type = PCFSoftShadowMap;
     this.renderer.setSize(this.getWidth(), this.getHeight());
   }
 
@@ -126,7 +146,7 @@ export class ThreeRenderer {
   }
 
   addMouse() {
-    this.mouse = new THREE.Vector2(1, 1);
+    this.mouse = new Vector2(1, 1);
 
     window.addEventListener("pointermove", this.onMouseMove.bind(this), true);
   }
@@ -139,15 +159,15 @@ export class ThreeRenderer {
   }
 
   addRaycaster() {
-    this.raycaster = new THREE.Raycaster();
+    this.raycaster = new Raycaster();
   }
 
   addBoxes(points) {
     const size = 1;
     const height = 5;
-    const material = new THREE.MeshLambertMaterial();
+    const material = new MeshLambertMaterial();
 
-    const geometry = new THREE.BoxBufferGeometry(size, height, size);
+    const geometry = new BoxBufferGeometry(size, height, size);
     geometry.translate(0, 2.5, 0);
     this.mesh = this.getBox(geometry, material, this.size * this.size);
     this.scene.add(this.mesh);
@@ -157,7 +177,7 @@ export class ThreeRenderer {
         this.boxes[x] = [];
       }
 
-      const pivot = new THREE.Object3D();
+      const pivot = new Object3D();
       this.boxes[x][y] = pivot;
 
       pivot.position.set(x, height, y);
@@ -198,7 +218,7 @@ export class ThreeRenderer {
   updateColors(colors) {
     this.colors = colors.map((color) => {
       if (color) {
-        return new THREE.Color(color);
+        return new Color(color);
       }
 
       return this.color;
@@ -206,14 +226,14 @@ export class ThreeRenderer {
   }
 
   updateBackgroundColor(color) {
-    this.scene.background = new THREE.Color(color);
+    this.scene.background = new Color(color);
   }
 
   addFloor() {
-    const planeGeometry = new THREE.PlaneBufferGeometry(500, 500);
-    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.35 });
+    const planeGeometry = new PlaneBufferGeometry(500, 500);
+    const planeMaterial = new ShadowMaterial({ opacity: 0.35 });
 
-    const floor = new THREE.Mesh(planeGeometry, planeMaterial);
+    const floor = new Mesh(planeGeometry, planeMaterial);
 
     planeGeometry.rotateX(-Math.PI / 2);
 
@@ -224,8 +244,8 @@ export class ThreeRenderer {
   }
 
   getBox(geometry, material, count) {
-    const mesh = new THREE.InstancedMesh(geometry, material, count);
-    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    const mesh = new InstancedMesh(geometry, material, count);
+    mesh.instanceMatrix.setUsage(DynamicDrawUsage);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
 
@@ -234,7 +254,7 @@ export class ThreeRenderer {
 
   addGrid() {
     const divisions = this.size;
-    this.gridHelper = new THREE.GridHelper(this.size, divisions);
+    this.gridHelper = new GridHelper(this.size, divisions);
 
     this.gridHelper.position.set(0, 0, 0);
     this.gridHelper.material.opacity = 0;
