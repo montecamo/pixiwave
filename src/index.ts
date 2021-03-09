@@ -9,7 +9,9 @@ import {
 import { installControls } from './controls';
 
 import { makeRenderer } from './renderer';
-import { darken } from './utils';
+import { darken, memoize } from './utils';
+
+const darkenMemoized = memoize(darken, (color) => color);
 
 const stats = installStats(document.getElementById('stats'));
 const controls = installControls();
@@ -88,7 +90,7 @@ function loop() {
     : points.map(() => undefined);
   const backgroundColor =
     controls.get('rainbow') && coreRenderer.getWavesCount() > 0
-      ? darken(
+      ? darkenMemoized(
           threeRenderer.getBackgroundColor(),
           coreRenderer.getWavesCount() / 5
         )

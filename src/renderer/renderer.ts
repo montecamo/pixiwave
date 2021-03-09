@@ -18,7 +18,7 @@ import {
   getWaveShapeColor,
 } from '../models';
 import type { Color } from '../utils';
-import { brighten, mixColors } from '../utils';
+import { brighten, mixColors, memoize } from '../utils';
 import { isWaveFinished } from './utils';
 
 type RenderWaves = Array<WaveShape>;
@@ -27,6 +27,9 @@ type RenderState = {
   waves: RenderWaves;
   shape: RenderShape;
 };
+
+const brightenMemoized = memoize(brighten, (color) => color);
+const mixColorsMemoized = memoize(mixColors, (colors) => colors.join(''));
 
 type Renderer = {
   addWave(wave: WaveShape): void;
@@ -139,8 +142,8 @@ export function makeRenderer(shape: Shape): Renderer {
       );
 
       if (intersectingWaves.length) {
-        return brighten(
-          mixColors(intersectingWaves.map(getWaveShapeColor)),
+        return brightenMemoized(
+          mixColorsMemoized(intersectingWaves.map(getWaveShapeColor)),
           height / 10
         );
       }
