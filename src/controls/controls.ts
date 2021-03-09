@@ -8,6 +8,7 @@ export type Options = {
   speed: number;
   infinite: boolean;
   rainbow: boolean;
+  epilepsy: boolean;
   wavetype: ShapeType;
   clear: () => void;
 };
@@ -25,6 +26,7 @@ export function installControls(): ControlsInterface {
     speed: 0.04,
     infinite: false,
     rainbow: true,
+    epilepsy: false,
     wavetype: 'circle' as 'circle',
     clear: () => {},
   };
@@ -35,7 +37,8 @@ export function installControls(): ControlsInterface {
   basic.add(data, 'frequency', 0.001, 1, 0.001).name('Frequency');
   basic.add(data, 'size', 1, 100, 1).name('Size');
   basic.add(data, 'speed', 0, 0.2, 0.001).name('Speed');
-  basic.add(data, 'rainbow').name('Ranbow ✨');
+  basic.add(data, 'rainbow').name('Rainbow 🦄');
+  basic.add(data, 'epilepsy').name('Epilepsy 🤪');
 
   basic.open();
 

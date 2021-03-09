@@ -9,7 +9,7 @@ import {
 import { installControls } from './controls';
 
 import { makeRenderer } from './renderer';
-import { darken, memoize } from './utils';
+import { darken, memoize, fswitch, fdefault, randomColor } from './utils';
 
 const darkenMemoized = memoize(darken, (color, amount) => `${color}${amount}`);
 
@@ -85,17 +85,23 @@ function loop() {
 
   const points = coreRenderer.render();
 
-  const colors = controls.get('rainbow')
-    ? points.map(([, color]) => color)
-    : points.map(() => undefined);
+  const colors = fswitch(
+    [() => controls.get<boolean>('epilepsy'), points.map(() => randomColor())],
+    [() => controls.get<boolean>('rainbow'), points.map(([, color]) => color)],
+    [fdefault, points.map(() => undefined)]
+  );
 
-  const backgroundColor =
-    controls.get('rainbow') && coreRenderer.getWavesCount() > 0
-      ? darkenMemoized(
-          threeRenderer.getBackgroundColor(),
-          coreRenderer.getWavesCount() / 5
-        )
-      : threeRenderer.getBackgroundColor();
+  const backgroundColor = fswitch(
+    [() => controls.get<boolean>('epilepsy'), randomColor()],
+    [
+      () => controls.get('rainbow') && coreRenderer.getWavesCount() > 0,
+      darkenMemoized(
+        threeRenderer.getBackgroundColor(),
+        coreRenderer.getWavesCount() / 5
+      ),
+    ],
+    [fdefault, threeRenderer.getBackgroundColor()]
+  );
 
   threeRenderer.updateBoxes(points.map(([point]) => point));
   threeRenderer.updateColors(colors);
