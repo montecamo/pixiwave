@@ -86,8 +86,9 @@ function loop() {
   const points = coreRenderer.render();
 
   const colors = controls.get('rainbow')
-    ? coreRenderer.renderColors()
+    ? points.map(([, color]) => color)
     : points.map(() => undefined);
+
   const backgroundColor =
     controls.get('rainbow') && coreRenderer.getWavesCount() > 0
       ? darkenMemoized(
@@ -96,7 +97,7 @@ function loop() {
         )
       : threeRenderer.getBackgroundColor();
 
-  threeRenderer.updateBoxes(points);
+  threeRenderer.updateBoxes(points.map(([point]) => point));
   threeRenderer.updateColors(colors);
   threeRenderer.updateBackgroundColor(backgroundColor);
 

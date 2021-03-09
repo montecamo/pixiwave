@@ -37,8 +37,7 @@ type Renderer = {
   updateWaveFunction(f: WaveFunction): void;
   updateWaveSpeed(speed: WaveSpeed): void;
   updateShape(shape: Shape): void;
-  render(): Array<Point>;
-  renderColors(): Array<Color>;
+  render(): Array<[Point, Color]>;
   tick(): void;
   getWavesCount(): number;
 };
@@ -108,50 +107,27 @@ export function makeRenderer(shape: Shape): Renderer {
   }
 
   // GETTERS
-  function render(): Array<Point> {
+  function render(): Array<[Point, Color]> {
     const shape = getRenderStateShape(state);
     const waves = getRenderStateWaves(state);
     const shapePoints = getShapePoints(shape);
 
     return shapePoints.map((point) => {
-      return makePoint(
-        getPointX(point),
-        getPointY(point),
-        interfereWaves(
-          waves
-            .map((wave) => getWaveShapePointDepth(wave, point))
-            .filter((d) => d >= 0)
-        )
-      );
+      const depths = waves.map((wave) => getWaveShapePointDepth(wave, point));
+      const height = interfereWaves(depths.filter((d) => d >= 0));
+      const colors = depths.reduce((acc, depth, index) => {
+        if (depth > 0) {
+          acc.push(getWaveShapeColor(waves[index]));
+        }
+
+        return acc;
+      }, []);
+      const color = colors.length
+        ? brightenMemoized(mixColorsMemoized(colors), height / 10)
+        : undefined;
+
+      return [makePoint(getPointX(point), getPointY(point), height), color];
     });
-  }
-
-  function renderColors(): Array<Color> {
-    const shape = getRenderStateShape(state);
-    const waves = getRenderStateWaves(state);
-    const shapePoints = getShapePoints(shape);
-
-    const ret = shapePoints.map((point) => {
-      const intersectingWaves = waves.filter(
-        (wave) => getWaveShapePointDepth(wave, point) > 0
-      );
-      const height = interfereWaves(
-        waves
-          .map((wave) => getWaveShapePointDepth(wave, point))
-          .filter((d) => d >= 0)
-      );
-
-      if (intersectingWaves.length) {
-        return brightenMemoized(
-          mixColorsMemoized(intersectingWaves.map(getWaveShapeColor)),
-          height / 10
-        );
-      }
-
-      return undefined;
-    });
-
-    return ret;
   }
 
   function getWavesCount(): number {
@@ -166,7 +142,6 @@ export function makeRenderer(shape: Shape): Renderer {
     clearWaves,
     tick,
     render,
-    renderColors,
     getWavesCount,
   };
 }
