@@ -5,3 +5,4 @@ export * from './tagsTable';
 export * from './color';
 export * from './click';
 export * from './memoize';
+export * from './switch';
