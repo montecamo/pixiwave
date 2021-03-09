@@ -7,14 +7,14 @@
 </div>
 <div align="center">
   <h3>
-    <a href="">
+    <a href="https://pixiwave.montecamo.dev/">
       Demo
     </a>
   </h3>
 </div>
 <br/>
 <p align="center">
-  <a href="">
+  <a href="https://pixiwave.montecamo.dev/">
     <img title="Pixiwave" src="assets/wave.png" width="400">
   </a>
 </p>
