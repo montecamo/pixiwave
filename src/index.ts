@@ -11,7 +11,7 @@ import { installControls } from './controls';
 import { makeRenderer } from './renderer';
 import { darken, memoize } from './utils';
 
-const darkenMemoized = memoize(darken, (color) => color);
+const darkenMemoized = memoize(darken, (color, amount) => `${color}${amount}`);
 
 const stats = installStats(document.getElementById('stats'));
 const controls = installControls();
