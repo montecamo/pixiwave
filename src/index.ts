@@ -83,12 +83,11 @@ function loop() {
 
   coreRenderer.tick();
 
-  const points = coreRenderer.render();
+  const points = coreRenderer.render(controls.get('rainbow'));
 
   const colors = fswitch(
     [() => controls.get<boolean>('epilepsy'), points.map(() => randomColor())],
-    [() => controls.get<boolean>('rainbow'), points.map(([, color]) => color)],
-    [fdefault, points.map(() => undefined)]
+    [fdefault, points.map(([, color]) => color)]
   );
 
   const backgroundColor = fswitch(

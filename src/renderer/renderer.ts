@@ -28,7 +28,10 @@ type RenderState = {
   shape: RenderShape;
 };
 
-const brightenMemoized = memoize(brighten, (color) => color);
+const brightenMemoized = memoize(
+  brighten,
+  (color, amount) => `${color}${amount}`
+);
 const mixColorsMemoized = memoize(mixColors, (colors) => colors.join(''));
 
 type Renderer = {
@@ -37,7 +40,7 @@ type Renderer = {
   updateWaveFunction(f: WaveFunction): void;
   updateWaveSpeed(speed: WaveSpeed): void;
   updateShape(shape: Shape): void;
-  render(): Array<[Point, Color]>;
+  render(colorful: boolean): Array<[Point, Color]>;
   tick(): void;
   getWavesCount(): number;
 };
@@ -107,26 +110,33 @@ export function makeRenderer(shape: Shape): Renderer {
   }
 
   // GETTERS
-  function render(): Array<[Point, Color]> {
+  function render(colorful: boolean): Array<[Point, Color]> {
     const shape = getRenderStateShape(state);
     const waves = getRenderStateWaves(state);
     const shapePoints = getShapePoints(shape);
 
-    return shapePoints.map((point) => {
-      const depths = waves.map((wave) => getWaveShapePointDepth(wave, point));
+    return shapePoints.map((p) => {
+      const depths = waves.map((wave) => getWaveShapePointDepth(wave, p));
       const height = interfereWaves(depths.filter((d) => d >= 0));
-      const colors = depths.reduce((acc, depth, index) => {
-        if (depth > 0) {
-          acc.push(getWaveShapeColor(waves[index]));
-        }
 
-        return acc;
-      }, []);
-      const color = colors.length
-        ? brightenMemoized(mixColorsMemoized(colors), height / 10)
-        : undefined;
+      const point = makePoint(getPointX(p), getPointY(p), height);
 
-      return [makePoint(getPointX(point), getPointY(point), height), color];
+      if (colorful) {
+        const colors = depths.reduce((acc, depth, index) => {
+          if (depth > 0) {
+            acc.push(getWaveShapeColor(waves[index]));
+          }
+
+          return acc;
+        }, []);
+        const color = colors.length
+          ? brightenMemoized(mixColorsMemoized(colors), height / 10)
+          : undefined;
+
+        return [point, color];
+      }
+
+      return [point, undefined];
     });
   }
 
