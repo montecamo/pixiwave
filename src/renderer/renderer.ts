@@ -130,7 +130,7 @@ export function makeRenderer(shape: Shape): Renderer {
           return acc;
         }, []);
         const color = colors.length
-          ? brightenMemoized(mixColorsMemoized(colors), height / 14)
+          ? brightenMemoized(mixColorsMemoized(colors), height / 10)
           : undefined;
 
         return [point, color];
